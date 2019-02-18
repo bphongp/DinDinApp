@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, Button } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
 
 export default class SplashScreen extends React.Component {
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <View style={styles.container}>
-                <Image source={require('../assets/Illustration.png')} />
-                <Text style={styles.titleText}>DinDin</Text>
-                <Text style={styles.subText}>Connecting Food Lovers</Text>
+                    <Image source={require('../assets/Illustration.png')} />
+                    <Text style={styles.titleText}>DinDin</Text>
+                    <Text style={styles.subText}>Connecting Food Lovers</Text>
                 </View>
-                <Image style = {styles.getStartedButton} source={require('../assets/getStarted.png')} />
+                <TouchableOpacity onPress={() => {
+                    this.props.navigation.navigate('Home')
+                }}>
+                    <Image style={styles.getStartedButton} source={require('../assets/getStarted.png')} />
+                </TouchableOpacity>
             </View>
 
         )

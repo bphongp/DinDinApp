@@ -4,9 +4,9 @@ import { View, StyleSheet, Image, Text, Button } from 'react-native'
 export default class HomeScreen extends React.Component {
     render() {
         return (
-            <View>
+            <View >
                 <View style={styles.container}>
-                <Text style={styles.titleText}>HomeScreen</Text>
+                <Text style={styles.titleText}>HomeScreen :D</Text>
                 <Text style={styles.subText}>Connecting Food Lovers</Text>
                 </View>
                 
@@ -19,7 +19,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create(
     {
         container: {
-            flex: 1,
+            flex: 0,
             backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',

@@ -6,11 +6,11 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 const rootStack = createStackNavigator(
   {
-  Splash: SplashScreen,
-  Home: HomeScreen,
+    Splash: SplashScreen,
+    Home: HomeScreen,
   },
   {
-  initialRouteName: 'Splash',
+    initialRouteName: 'Splash',
   }
  );
 

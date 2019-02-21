@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import SplashScreen from './components/SplashScreen';
 import HomeScreen from './components/HomeScreen';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import Orientation from 'react-native-orientation';
 
 const rootStack = createStackNavigator(
   {

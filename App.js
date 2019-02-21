@@ -1,8 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Dime} from 'react-native';
 import SplashScreen from './components/SplashScreen';
 import HomeScreen from './components/HomeScreen';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createAppContainer} from 'react-navigation';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const rootStack = createStackNavigator(
   {
@@ -17,6 +21,7 @@ const rootStack = createStackNavigator(
 const AppContainer = createAppContainer(rootStack)
 
 export default class App extends React.Component {
+
   render() {
     return (
         <AppContainer/>

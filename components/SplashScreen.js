@@ -1,26 +1,32 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, Dimensions} from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 export default class SplashScreen extends React.Component {
+    
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.container}>
-                    <Image source={require('../assets/Illustration.png')} />
+                <ScrollView>
+                     <View style={styles.container}>
+                    <Image style = {styles.logo} source={require('../assets/Illustration.png')} />
                     <Text style={styles.titleText}>DinDin</Text>
                     <Text style={styles.subText}>Connecting Food Lovers</Text>
-                </View>
-                <TouchableOpacity onPress={() => {
-                    this.props.navigation.navigate('Home')
-                }}>
-                    <Image style={styles.getStartedButton} source={require('../assets/getStarted.png')} />
-                </TouchableOpacity>
+                    </View>
+                </ScrollView>
+               
+                    <TouchableOpacity onPress={() => {
+                        this.props.navigation.navigate('Home')
+                    }}>
+                        <Image source={require('../assets/getStarted.png')} />
+                    </TouchableOpacity>
+               
             </View>
 
         )
     }
 }
-
+const { height } = Dimensions.get('window');
 const styles = StyleSheet.create(
     {
         container: {
@@ -32,21 +38,20 @@ const styles = StyleSheet.create(
         titleText: {
             fontSize: 28,
             backgroundColor: '#fff',
-            alignItems: 'center',
-            justifyContent: 'center',
+           
             marginTop: 50,
         },
         subText: {
             fontSize: 15,
             fontStyle: 'italic',
             color: 'grey',
-            alignItems: 'center',
-            justifyContent: 'center',
+         
         },
-        getStartedButton: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
+        logo: {
+           flex: 1,
+           marginTop: height/10,
+           height: height/3,
+           resizeMode: 'contain'
         },
     }
 )

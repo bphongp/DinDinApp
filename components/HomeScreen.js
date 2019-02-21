@@ -1,13 +1,25 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, Button } from 'react-native'
+import { View, StyleSheet, Text, Dimensions} from 'react-native'
 
-export default class HomeScreen extends React.Component {
+export default class HomeScreen extends React.Component {     
+    state = {
+        width: 0,
+        height: 0
+    }; 
+    componentDidMount() {
+        Dimensions.addEventListener('change', (e) => {
+            const { width, height } = e.window;
+            this.setState({width, height});
+          })
+  }
+ 
+ 
     render() {
         return (
             <View >
                 <View style={styles.container}>
                 <Text style={styles.titleText}>HomeScreen :D</Text>
-                <Text style={styles.subText}>Connecting Food Lovers</Text>
+                <Text style={styles.subText}>{this.state.width}</Text>
                 </View>
                 
             </View>

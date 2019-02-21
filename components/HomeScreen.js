@@ -13,7 +13,9 @@ export default class HomeScreen extends React.Component {
                 flexGrow:1,
                 textAlign:'center',
             },
-
+            headerStyle: {
+                paddingVertical:15,
+            },
             headerLeft: (
                 <View style={{
                         margin:5,
@@ -25,7 +27,7 @@ export default class HomeScreen extends React.Component {
             headerRight:(
                 <View style={{
                     margin:5,
-                    paddingHorizontal:5,
+                    paddingHorizontal:10,
                 }}>
                     <Image source={require('../assets/searchbtn1.png')} />
                 </View>

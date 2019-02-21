@@ -1,25 +1,46 @@
 import React from 'react';
 import { View, StyleSheet, Text, Dimensions} from 'react-native'
 
-export default class HomeScreen extends React.Component {     
-    state = {
-        width: 0,
-        height: 0
-    }; 
-    componentDidMount() {
-        Dimensions.addEventListener('change', (e) => {
-            const { width, height } = e.window;
-            this.setState({width, height});
-          })
-  }
- 
- 
+export default class HomeScreen extends React.Component {
+    /*navigationOptions--this allows to customize the header */
+    /*****to do: how to align navigation text */
+    static navigationOptions = {
+            title:"DinDin",
+            headerTitleStyle:{
+                fontSize: 20,
+                fontWeight: undefined,
+                alignSelf: 'center',
+                flexGrow:1,
+                textAlign:'center',
+            },
+            headerStyle: {
+                paddingVertical:15,
+            },
+            headerLeft: (
+                <View style={{
+                        margin:5,
+                        paddingHorizontal:5,
+                    }}>
+                    <Image source={require('../assets/sidemenubtn1.png')} />
+                </View>
+            ),
+            headerRight:(
+                <View style={{
+                    margin:5,
+                    paddingHorizontal:10,
+                }}>
+                    <Image source={require('../assets/searchbtn1.png')} />
+                </View>
+            )
+        
+    };
+
     render() {
         return (
-            <View >
+            <View style ={styles.container} >
                 <View style={styles.container}>
-                <Text style={styles.titleText}>HomeScreen :D</Text>
-                <Text style={styles.subText}>{this.state.width}</Text>
+                    <Text style={styles.titleText}>HomeScreen :D</Text>
+                    <Text style={styles.subText}>Connecting Food Lovers</Text>
                 </View>
                 
             </View>
@@ -54,6 +75,6 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: 20,
-        },
+        }
     }
 )

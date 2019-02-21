@@ -4,21 +4,35 @@ import { View, StyleSheet, Image, Text, Button } from 'react-native'
 export default class HomeScreen extends React.Component {
     /*navigationOptions--this allows to customize the header */
     /*****to do: how to align navigation text */
-    static navigationOptions =({navigation}) => {
-        return{
-            title: "DinDin",
-            titleStyle:{
-                alignSelf:'center'
+    static navigationOptions = {
+            title:"DinDin",
+            headerTitleStyle:{
+                fontSize: 20,
+                fontWeight: undefined,
+                alignSelf: 'center',
+                flexGrow:1,
+                textAlign:'center',
             },
-            style:{
-                paddingLeft:10,
-                paddingRight:10,
-            },
-            headerLeft: <Image source={require('../assets/sidemenubtn1.png')} />,
-            headerRight:<Image source={require('../assets/searchbtn1.png')} />
-        }
+
+            headerLeft: (
+                <View style={{
+                        margin:5,
+                        paddingHorizontal:5,
+                    }}>
+                    <Image source={require('../assets/sidemenubtn1.png')} />
+                </View>
+            ),
+            headerRight:(
+                <View style={{
+                    margin:5,
+                    paddingHorizontal:5,
+                }}>
+                    <Image source={require('../assets/searchbtn1.png')} />
+                </View>
+            )
+        
     };
-    
+
     render() {
         return (
             <View style ={styles.container} >

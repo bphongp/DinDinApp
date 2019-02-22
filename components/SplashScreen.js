@@ -2,38 +2,31 @@ import React from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity, Animated } from 'react-native'
 
 export default class SplashScreen extends React.Component {
-    state ={
-        fadeAnimation: new Animated.Value(1)
+    constructor(){
+        super()
+        this.state={
+            image1Opacity: 1
+        }
     }
     componentDidMount(){
-        Animated.timing(
-            this.state.fadeAnimation,
-            {
-                toValue:0,
-                duration:10000,
-            }
-        ).start()
+        setInterval(()=>{ 
+            if(this.state.image1Opacity >= 1){
+                this.setState({
+                    image1Opacity: 0
+                })
+            }else{
+                this.setState({
+                    image1Opacity: this.state.image1Opacity + 0.01
+                })
+            }}
+      , 50)
     }
-    /*fadeAnimationIn(){
-        this.setState({fadeAnimation: new Animated.Value(1)}, 
-        ()=>{
-            Animated.timing(
-                this.state.fadeAnimation,
-                {
-                    toValue:1,
-                    duration:1000,
-                }
-            ).start();
-        })
-    }*/
+    
     render() {
-        let {fadeAnimation}=this.state
         return (
             <View style={styles.container}>
                 <View style={styles.container}>
-                    <Animated.View style ={{opacity:fadeAnimation}}>
-                        <Image source={require('../assets/Illustration.png')} />
-                    </Animated.View>
+                    <Image style={{opacity: this.state.image1Opacity}} source={require('../assets/Illustration.png')} />
                     <Text style={styles.titleText}>DinDin</Text>
                     <Text style={styles.subText}>Connecting Food Lovers</Text>
                 </View>

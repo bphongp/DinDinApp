@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, Image} from 'react-native'
 
 export default class HomeScreen extends React.Component {
     /*navigationOptions--this allows to customize the header */

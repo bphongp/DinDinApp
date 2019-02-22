@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Animated, Dimensions } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, Animated, Dimensions, ScrollView } from 'react-native'
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 export default class SplashScreen extends React.Component {
@@ -26,13 +26,11 @@ export default class SplashScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView>
                   <View style={styles.container}>
                     <Image style={{opacity: this.state.image1Opacity}} source={require('../assets/Illustration.png')} />
                     <Text style={styles.titleText}>DinDin</Text>
                     <Text style={styles.subText}>Connecting Food Lovers</Text>
                   </View>
-                </ScrollView>
                
                     <TouchableOpacity onPress={() => {
                         this.props.navigation.navigate('Home')

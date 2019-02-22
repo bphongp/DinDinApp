@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, Dime} from 'react-native';
 import SplashScreen from './components/SplashScreen';
 import HomeScreen from './components/HomeScreen';
-import { createStackNavigator, createAppContainer} from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import Orientation from 'react-native-orientation';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

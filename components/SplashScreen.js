@@ -22,28 +22,29 @@ export default class SplashScreen extends React.Component {
             }}
       , 50)
     }
-    
     render() {
         return (
             <View style={styles.container}>
-                  <View style={styles.container}>
-                    <Image style={{opacity: this.state.image1Opacity}} source={require('../assets/Illustration.png')} />
-                    <Text style={styles.titleText}>DinDin</Text>
-                    <Text style={styles.subText}>Connecting Food Lovers</Text>
-                  </View>
-               
-                    <TouchableOpacity onPress={() => {
-                        this.props.navigation.navigate('Home')
-                    }}>
-                        <Image source={require('../assets/getStarted.png')} />
-                    </TouchableOpacity>
-               
+                    <View style={styles.container}>
+                        <TouchableOpacity onPress={() => {this.props.navigation.navigate('Home')}}>
+                                <Image style ={styles.bottomButton} source={require('../assets/getStarted.png')} />
+                        </TouchableOpacity>
+                    </View>   
+                    <View style={styles.container}>
+                        
+                        <Image style= {styles.logo} source={require('../assets/background.png')} />
+                        <Text style={styles.titleText}>DinDin</Text>
+                        <Text style={styles.subText}>Connecting Food Lovers</Text>
+                    </View>     
+                    <View style={styles.container}>
+
+                    </View>
             </View>
 
         )
     }
 }
-const { height } = Dimensions.get('window');
+const { height} = Dimensions.get('window');
 const styles = StyleSheet.create(
     {
         container: {
@@ -51,24 +52,35 @@ const styles = StyleSheet.create(
             backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
+            position: 'absolute',
         },
         titleText: {
             fontSize: 28,
             backgroundColor: '#fff',
-           
+            marginLeft: height/2+height/9,//400,
             marginTop: 50,
         },
         subText: {
             fontSize: 15,
             fontStyle: 'italic',
             color: 'grey',
-         
+            marginLeft: height/2+height/9,//400,
         },
         logo: {
            flex: 1,
-           marginTop: height/10,
-           height: height/3,
-           resizeMode: 'contain'
+           marginTop: height/2+height/9+ height/10,//500
+           height: height/2.5,
+           resizeMode: 'contain',
+           marginLeft: height/2+height/9,//400,
         },
+        bottomButton: {
+            marginTop:height+height/1.41,//1160,
+            marginLeft:height/2+height/9,//400,
+            width: height/2 +height/9,
+        },
+        man:{
+            width:67,
+            height:72,
+        }
     }
 )

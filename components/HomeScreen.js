@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions} from 'react-native'
-
+import { View, StyleSheet, Text, Dimensions, Image} from 'react-native'
+import { createAppContainer, createStackNavigator } from 'react-navigation';
+import { strings } from '../locales/i18n';
 export default class HomeScreen extends React.Component {
     /*navigationOptions--this allows to customize the header */
     /*****to do: how to align navigation text */
@@ -36,11 +37,12 @@ export default class HomeScreen extends React.Component {
     };
 
     render() {
+    const stockValue = this.props.navigation.getParam('stockValue', 'not recorded');
         return (
             <View style ={styles.container} >
                 <View style={styles.container}>
-                    <Text style={styles.titleText}>HomeScreen :D</Text>
-                    <Text style={styles.subText}>Connecting Food Lovers</Text>
+                    <Text style={styles.titleText}>{strings('login.login_button')}</Text>
+                    <Text style={styles.subText}>LOL</Text>
                 </View>
                 
             </View>

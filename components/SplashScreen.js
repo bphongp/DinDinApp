@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, Dimensions} from 'react-native'
-import { heightPercentageToDP } from 'react-native-responsive-screen';
+import { strings } from '../locales/i18n';
 
 export default class SplashScreen extends React.Component {
     
@@ -10,8 +10,8 @@ export default class SplashScreen extends React.Component {
                 <ScrollView>
                      <View style={styles.container}>
                     <Image style = {styles.logo} source={require('../assets/Illustration.png')} />
-                    <Text style={styles.titleText}>DinDin</Text>
-                    <Text style={styles.subText}>Connecting Food Lovers</Text>
+                    <Text style={styles.titleText}>{strings('splash.title')}</Text>
+                    <Text style={styles.subText}>{strings('splash.desc')}</Text>
                     </View>
                 </ScrollView>
                
@@ -50,7 +50,7 @@ const styles = StyleSheet.create(
         logo: {
            flex: 1,
            marginTop: height/10,
-           height: height/3,
+           height: height/2,
            resizeMode: 'contain'
         },
     }

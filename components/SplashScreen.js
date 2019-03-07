@@ -26,19 +26,29 @@ export default class SplashScreen extends React.Component {
         return (
             <View style={styles.container}>
                     <View style={styles.container}>
-                        <TouchableOpacity onPress={() => {this.props.navigation.navigate('Home')}}>
-                                <Image style ={styles.bottomButton} source={require('../assets/getStarted.png')} />
-                        </TouchableOpacity>
-                    </View>   
-                    <View style={styles.container}>
                         
-                        <Image style= {styles.logo} source={require('../assets/background.png')} />
-                        <Text style={styles.titleText}>DinDin</Text>
-                        <Text style={styles.subText}>Connecting Food Lovers</Text>
+                        <Image style= {styles.logo } source={require('../assets/logosmall.png')} />
+                        <Image style ={{opacity: this.state.image1Opacity,
+                                marginLeft: 140,
+                                marginTop: 160,
+                            }} 
+                            source = {require('../assets/mansmall.png')}/>
+                        <Image style ={{opacity: this.state.image1Opacity,
+                                marginLeft:-200,
+                                marginTop: 30
+                            }} 
+                            source = {require('../assets/womansmall.png')}/>
+                        <Image style = {{ opacity: this.state.image1Opacity,
+                                    marginLeft:150,
+                        }} source = {require('../assets/glassessmall.png')}/>
+                        <View style = {{flex:1, flexDirection: 'column', alignItems:'center'}}>
+                            <Text style={styles.titleText}>DinDin</Text>
+                            <Text style={styles.subText}>Connecting Food Lovers</Text>
+                        </View>
                     </View>     
-                    <View style={styles.container}>
-
-                    </View>
+                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('Home')}}>
+                        <Image source={require('../assets/getStarted.png')} />
+                    </TouchableOpacity>
             </View>
 
         )
@@ -52,26 +62,31 @@ const styles = StyleSheet.create(
             backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
-            position: 'absolute',
+            //position: 'absolute',
         },
         titleText: {
             fontSize: 28,
             backgroundColor: '#fff',
-            marginLeft: height/2+height/9,//400,
-            marginTop: 50,
+            height: 35,
+            width: 90,
+            marginTop: height/2+height/9,
+            //marginLeft: height/2+height/9,//400,
         },
         subText: {
+            flex:1,
             fontSize: 15,
             fontStyle: 'italic',
             color: 'grey',
-            marginLeft: height/2+height/9,//400,
+            position: 'absolute',
+            marginTop: height/2+height/9+height/15,//400,
         },
         logo: {
-           flex: 1,
-           marginTop: height/2+height/9+ height/10,//500
+           position: 'absolute',
+           marginTop: height/2+height/9+ height/9,
+           /*marginTop: height/2+height/9+ height/10,//500
            height: height/2.5,
            resizeMode: 'contain',
-           marginLeft: height/2+height/9,//400,
+           marginLeft: height/2+height/9,//400,*/
         },
         bottomButton: {
             marginTop:height+height/1.41,//1160,
@@ -79,8 +94,15 @@ const styles = StyleSheet.create(
             width: height/2 +height/9,
         },
         man:{
-            width:67,
-            height:72,
+            marginLeft: 140,
+            marginTop: 160,
+        },
+        woman:{
+            marginLeft:-200,
+            marginTop: 30
+        },
+        glasses:{
+            marginLeft:150,
         }
     }
 )

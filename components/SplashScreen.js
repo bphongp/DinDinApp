@@ -6,6 +6,9 @@ export default class SplashScreen extends React.Component {
     constructor(){
         super()
         this.state={
+            /*current state of the icons image1 is the man, image2 is the woman
+            image3 is the woman with the glasses, timer is to have them
+            all fade at different intervals*/
             image1Opacity: 1,
             image2Opacity: 1,
             image3Opacity: 1,
@@ -13,6 +16,9 @@ export default class SplashScreen extends React.Component {
         }
     }
     componentDidMount(){
+        /*this entire thing is for the random fading of the icons
+        it timer is used to allow one icon to go after a crtain amount of time*/
+
         setInterval(()=>{ 
             if(this.state.image1Opacity >= 1){
                 this.setState({
@@ -52,25 +58,25 @@ export default class SplashScreen extends React.Component {
       , 50)
     }
     render() {
+        /* this is what will be rendered for the splash screen*/
         return (
             <View style={styles.container}>
                     <View style={styles.container}>
-                        
-                        <Image style= {styles.logo } source={require('../assets/logosmall.png')} />
+                        <Image style= {styles.logo } source={require('../assets/logo.png')} />
                         <Image style ={{opacity: this.state.image1Opacity,
                                 marginLeft: height/10+height/8,//140,
                                 marginTop: height/10+height/7.5,///160,
                             }} 
-                            source = {require('../assets/mansmall.png')}/>
+                            source = {require('../assets/man.png')}/>
                         <Image style ={{opacity: this.state.image2Opacity,
                                 marginLeft:-(height/3.3),//200
                                 marginTop: height/50 +height/20,//30
                             }} 
-                            source = {require('../assets/womansmall.png')}/>
+                            source = {require('../assets/woman.png')}/>
                         <Image style = {{ opacity: this.state.image3Opacity,
                                 marginLeft:height/5,//150
                                 marginTop:-(height/40)//20,
-                        }} source = {require('../assets/glassessmall.png')}/>
+                        }} source = {require('../assets/glasses.png')}/>
                         <View style = {{flex:1, flexDirection: 'column', alignItems:'center'}}>
                             <Text style={styles.titleText}>DinDin</Text>
                             <Text style={styles.subText}>Connecting Food Lovers</Text>
@@ -84,6 +90,7 @@ export default class SplashScreen extends React.Component {
         )
     }
 }
+/*height is used to try to make it so it is responsive*/
 const { height} = Dimensions.get('window');
 const styles = StyleSheet.create(
     {
@@ -92,13 +99,11 @@ const styles = StyleSheet.create(
             backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
-            //position: 'absolute',
         },
         titleText: {
             fontSize: 28,
             backgroundColor: '#fff',
-            marginTop: height/60,
-            //marginLeft: height/2+height/9,//400,
+            marginTop: height/60,//400
         },
         subText: {
             flex:1,
@@ -111,21 +116,6 @@ const styles = StyleSheet.create(
         logo: {
            position: 'absolute',
            marginTop: height/2+height/9+ height/9,
-           /*marginTop: height/2+height/9+ height/10,//500
-           height: height/2.5,
-           resizeMode: 'contain',
-           marginLeft: height/2+height/9,//400,*/
-        },
-        man:{
-            marginLeft: height/2,//140,
-            marginTop: height/2,//160,
-        },
-        woman:{
-            marginLeft:-200,
-            marginTop: 30
-        },
-        glasses:{
-            marginLeft:150,
         }
     }
 )

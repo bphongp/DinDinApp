@@ -21,7 +21,7 @@ export default class HomeScreen extends React.Component {
                         margin:5,
                         paddingHorizontal:5,
                     }}>
-                    <Image source={require('../assets/sidemenubtn1.png')} />
+                    <Image source={require('../assets/sidemenu.png')} />
                 </View>
             ),
             headerRight:(
@@ -29,7 +29,7 @@ export default class HomeScreen extends React.Component {
                     margin:5,
                     paddingHorizontal:10,
                 }}>
-                    <Image source={require('../assets/searchbtn1.png')} />
+                    <Image source={require('../assets/search.png')} />
                 </View>
             )
         

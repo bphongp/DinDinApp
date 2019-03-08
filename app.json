@@ -4,6 +4,9 @@
     "slug": "din-din",
     "privacy": "public",
     "sdkVersion": "32.0.0",
+    "facebookScheme":"fb394689051318456",
+    "facebookAppId":"394689051318456",
+    "facebookDisplayName":"DinDin",
     "platforms": [
       "ios",
       "android"

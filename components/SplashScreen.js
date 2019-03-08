@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Animated, Dimensions, ScrollView } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, Animated, Dimensions, ScrollView, Button, Alert} from 'react-native'
 import { heightPercentageToDP } from 'react-native-responsive-screen';
+import {Facebook} from 'expo';
 
 export default class SplashScreen extends React.Component {
     constructor(){
@@ -57,25 +58,54 @@ export default class SplashScreen extends React.Component {
         }
       , 50)
     }
+
+    login = async()=> {
+        try {
+          const {
+            type,
+            token,
+            expires,
+            permissions,
+            declinedPermissions,
+          } = await Facebook.logInWithReadPermissionsAsync('394689051318456', {
+            permissions: ['public_profile'],
+          });
+          if (type === 'success') {
+            // Get the user's name using Facebook's Graph API
+            const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+            Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+          } else {
+            // type === 'cancel'
+          }
+        } catch ({ message }) {
+          alert(`Facebook Login Error: ${message}`);
+        }
+    }
+
+
     render() {
-        /* this is what will be rendered for the splash screen*/
+        /* this is what will be rendered for the splash screen */
         return (
             <View style={styles.container}>
                     <View style={styles.container}>
+                        <Button style ={{backgroundColor: '#3b5998'}} onPress={this.login.bind(this)} title='Connect to FaceBook'/>
                         <Image style= {styles.logo } source={require('../assets/logo.png')} />
                         <Image style ={{opacity: this.state.image1Opacity,
                                 marginLeft: height/10+height/8,//140,
-                                marginTop: height/10+height/7.5,///160,
+                                marginTop: height/10+height/12,///160,
+                                flex: 0,
                             }} 
                             source = {require('../assets/man.png')}/>
                         <Image style ={{opacity: this.state.image2Opacity,
-                                marginLeft:-(height/3.3),//200
-                                marginTop: height/50 +height/20,//30
+                                marginLeft:-(height/3),//200
+                                marginTop: height/50 +height/21,//30
+                                flex: 0,
                             }} 
                             source = {require('../assets/woman.png')}/>
                         <Image style = {{ opacity: this.state.image3Opacity,
                                 marginLeft:height/5,//150
-                                marginTop:-(height/40)//20,
+                                marginTop:-(height/40),//20,
+                                flex:0,
                         }} source = {require('../assets/glasses.png')}/>
                         <View style = {{flex:1, flexDirection: 'column', alignItems:'center'}}>
                             <Text style={styles.titleText}>DinDin</Text>

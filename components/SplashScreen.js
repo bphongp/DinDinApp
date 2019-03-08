@@ -115,7 +115,6 @@ const styles = StyleSheet.create(
         },
         logo: {
            position: 'absolute',
-           marginTop: height/2+height/9+ height/9,
         }
     }
 )

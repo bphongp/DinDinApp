@@ -112,8 +112,8 @@ export default class SplashScreen extends React.Component {
                             <Text style={styles.subText}>Connecting Food Lovers</Text>
                         </View>
                     </View>     
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('Home')}}>
-                        <Image style= {{width: height/2 +height/9}} source={require('../assets/getStarted.png')} />
+                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('InvitationCard')}}>
+                        <Image style= {{width:width}} source={require('../assets/getStarted.png')} />
                     </TouchableOpacity>
             </View>
 
@@ -121,7 +121,7 @@ export default class SplashScreen extends React.Component {
     }
 }
 /*height is used to try to make it so it is responsive*/
-const { height} = Dimensions.get('window');
+const { height, width} = Dimensions.get('window');
 const styles = StyleSheet.create(
     {
         container: {

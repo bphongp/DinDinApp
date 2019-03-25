@@ -112,7 +112,7 @@ export default class SplashScreen extends React.Component {
                             <Text style={styles.subText}>Connecting Food Lovers</Text>
                         </View>
                     </View>     
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('InvitationCard')}}>
+                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('')}}>
                         <Image style= {{width:width}} source={require('../assets/getStarted.png')} />
                     </TouchableOpacity>
             </View>

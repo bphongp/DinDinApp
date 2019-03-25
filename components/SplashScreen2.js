@@ -116,7 +116,7 @@ export default class SplashScreen extends React.Component {
                             <Button style ={{backgroundColor: '#3b5998', marginTop:'20%'}} onPress={this.login.bind(this)} title='Connect to FaceBook'/>
                         </View>
                         <View style = {{flex: .08}}>
-                <TouchableOpacity style = {{flex: 1}} onPress={() => {this.props.navigation.navigate('InvitationCard')}}>
+                <TouchableOpacity style = {{flex: 1}} onPress={() => {this.props.navigation.navigate('Flatlist')}}>
                         <Image style= {{width: '100%', height: '100%'}} source={require('../assets/getStarted.png')} />
                 </TouchableOpacity>
                 </View>

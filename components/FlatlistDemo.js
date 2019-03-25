@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Button } from 'react-native'
 export default class FlatlistDemo extends React.Component {
     constructor() {
         super()
@@ -26,13 +26,20 @@ export default class FlatlistDemo extends React.Component {
     renderRow({ item }) {
       
         return (
-           
-                <View style={styles.container}>
-                <Text style={styles.podCastTile}>{item.email}</Text>
-                    <Image style={styles.podImages} source={{ uri: item.picture.thumbnail }} />
-                    
+            <View style = {styles.card}>
+                <View style = {styles.topContainer}>
+                <Image style = {styles.image} source={{ uri: item.picture.thumbnail }} />
+                    <View style = {{marginTop: 10, flex: 2}}>
+                    <Text style = {styles.text}>{item.name.first}</Text>    
+                    <Text style = {styles.text}>Sunday 17 June - 8:00</Text> 
+                    </View>  
+                    <View style = {{flex:.75}}>
+                    <Button  onPress={FlatlistDemo} color = 'green' title = 'Call'></Button>
+                    <Button  style = {{marginTop: 10}} onPress={FlatlistDemo} color = 'skyblue' title = 'Email'></Button>
+                    </View> 
                 </View>
-       
+
+            </View>
         )
     }
     static navigationOptions = {
@@ -98,46 +105,35 @@ renderSeparator = () => {
 
 const styles = StyleSheet.create(
     {
-        conatiner: {
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            padding: 20
+        card: {
+            overflow: 'hidden',
+            backgroundColor: 'white',
+            margin: 15,
+            height: 100,
+        
+            borderWidth: 1,
+            borderColor: 'lightgrey',
+            borderRadius: 8,
         },
-        titleSection: {
-            height: 29,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+        topContainer: {
+           flex:1,
+           flexDirection: 'row',
         },
-
-        title: {
-          
-            fontSize: 24,
-            color: "#FFFFFF",
-            letterSpacing: 0.35,
-            textAlign: "left",
-        },
-        ScollablePodCasts: {
-      
-        },
-        rowContainer: {
-            
-        },
-        podCastContainer: {
-           
-          
-        },
-        podCastTile: {
-            fontSize: 14,
-            color: "#1B2631",
-            letterSpacing: -0.15,
-            textAlign: "left",
-            paddingTop: 10
-        },
-        podImages: {
-            height: 60,
+        image: {
             width: 60,
-        }
+            height: 60,
+            borderRadius:50,
+            margin: 10,
+            marginLeft: 15,
+        },
+        text:{
+            marginTop: 5,
+            marginLeft: 10
+        },
+        button: {
+            marginTop: 10,
+            borderRadius: 8,
+        },
+        
     }
 )

@@ -18,7 +18,9 @@ const rootStack = createStackNavigator(
   }
  );
 
-const AppContainer = createAppContainer(rootStack)
+const AppContainer = createAppContainer(rootStack);
+
+<AppContainer persistenceKey={"NavigationState"} />;
 
 export default class App extends React.Component {
 

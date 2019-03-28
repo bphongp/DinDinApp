@@ -57,9 +57,9 @@ export default class FlatlistDemo extends React.Component {
         return (
             <View style={styles.card}>
                 <View style={styles.topContainer}>
-                    <Image style={styles.image} source={{ uri: item.picture.thumbnail }} />
+                    <Image style={styles.image} source={{ uri: item.photo }} />
                     <View style={{ marginTop: '3%', flex: 2 }}>
-                        <Text style={styles.text}>{item.name.first}</Text>
+                        <Text style={styles.text}>{item.name}</Text>
                         <Text style={styles.text}>{item.date}</Text>
                     </View>
                     <View style={{ flex: .75, flexDirection: 'row'}}>

@@ -100,17 +100,16 @@ export default class SplashScreen extends React.Component {
         return (
             <View style={styles.container}>
                   <View style = {{flex: 1}}>
-                        <View style = {{flex:.62, backgroundColor : 'blue',overflow: 'visible'}}>
-                            <View style = {{flex: 1, backgroundColor : 'green', margin:'5%',overflow: 'visible'}}>
-                                <ImageBackground resizeMode="contain" style= {{width:'100%', height: '100%'}} source={require('../assets/logo.png')} >
-                        
-                                    <Image  resizeMode="contain" style ={{marginTop:'0%', marginLeft: '70%', opacity: this.state.image1Opacity}} source = {require('../assets/man.png')}/>
-                                    <Image  resizeMode="contain" style ={{marginTop:'3%', marginLeft: '0%',opacity: this.state.image2Opacity,}} source = {require('../assets/woman.png')}/>
-                                    <Image  resizeMode="contain" style ={{marginTop:'20%', marginLeft: '65%', bottom: '0%', opacity: this.state.image3Opacity,}} source = {require('../assets/glasses.png')}/>
+                        <View style = {{flex:.62, backgroundColor : 'white',overflow: 'visible',justifyContent:'center',alignItems:'center'}}>
+                          
+                                <ImageBackground resizeMode="contain" style= {{width:300, height:'100%', flexDirection: 'column', flex: 1}} source={require('../assets/logo.png')} >
+                                    <View style = {{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginTop:'5%'}}><Image  resizeMode="contain" style ={{ opacity: this.state.image1Opacity}} source = {require('../assets/man.png')}/></View>
+                                    <View style = {{flex:1, flexDirection: 'row'}}><Image  resizeMode="contain" style ={{ opacity: this.state.image2Opacity,}} source = {require('../assets/woman.png')}/></View>
+                                    <View style = {{flex:1, flexDirection: 'row'}}><Image  resizeMode="contain" style ={{ marginLeft: '65%', bottom: '0%', opacity: this.state.image3Opacity,}} source = {require('../assets/glasses.png')}/></View>
                                 </ImageBackground>
-                            </View>
+ 
                         </View>
-                        <View style = {{flex:.3 , alignItems:'center', backgroundColor: 'pink'}}>
+                        <View style = {{flex:.3 , alignItems:'center', backgroundColor: 'white'}}>
                             <Text style={styles.titleText} >{i18n.t('title')}</Text>
                             <Text style={styles.subText} >{i18n.t('subtitle')}</Text>
                             <Button style ={{backgroundColor: '#3b5998', marginTop:'20%'}} onPress={this.login.bind(this)} title='Connect to FaceBook'/>

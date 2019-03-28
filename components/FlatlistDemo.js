@@ -1,10 +1,28 @@
 import * as React from 'react'
 import { StyleSheet, Text, View, Image, FlatList, Button } from 'react-native'
+
+import firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAfNTdT8nd5lNr5E_t8XsQyuGGC3zlppS8",
+    authDomain: "mobile-d433b.firebaseapp.com",
+    databaseURL: "https://mobile-d433b.firebaseio.com",
+    projectId: "mobile-d433b",
+    storageBucket: "mobile-d433b.appspot.com",
+    messagingSenderId: "528264911283"
+};
+
 export default class FlatlistDemo extends React.Component {
     constructor() {
         super()
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        this.setupPeopleListener()
+
         this.state = {
-            podCastList: null
+            podCastList: null, 
+            hasData:  false
         }
     }
 
@@ -16,75 +34,99 @@ export default class FlatlistDemo extends React.Component {
         })
     }
     componentWillMount() {
+        //Check to see if already initialized
+       
+
         this.getPodCastData()
     }
 
+
+
+    setupPeopleListener() {
+        let currentState = this.state
+        console.log("fired listener")
+        firebase.database().ref('Invitations/').on('value', (snapshot) => {
+            console.log(JSON.stringify(snapshot.val()))
+            invitations = snapshot.val()
+                currentState.setState({
+                invitationsData : invitations, 
+                hasData: true
+            })
+        });
+    }
     keyExtractor(item) {
         return item.email.toString()
     }
 
     renderRow({ item }) {
-      
+
         return (
-            <View style = {styles.card}>
-                <View style = {styles.topContainer}>
-                <Image style = {styles.image} source={{ uri: item.picture.thumbnail }} />
-                    <View style = {{marginTop: 10, flex: 2}}>
-                    <Text style = {styles.text}>{item.name.first}</Text>    
-                    <Text style = {styles.text}>Sunday 17 June - 8:00</Text> 
-                    </View>  
-                    <View style = {{flex:.75}}>
-                    <Button  onPress={FlatlistDemo} color = 'green' title = 'Call'></Button>
-                    <Button  style = {{marginTop: 10}} onPress={FlatlistDemo} color = 'skyblue' title = 'Email'></Button>
-                    </View> 
+            <View style={styles.card}>
+                <View style={styles.topContainer}>
+                    <Image style={styles.image} source={{ uri: item.picture.thumbnail }} />
+                    <View style={{ marginTop: 10, flex: 2 }}>
+                        <Text style={styles.text}>{item.name.first}</Text>
+                        <Text style={styles.text}>Sunday 17 June - 8:00</Text>
+                    </View>
+                    <View style={{ flex: .75 }}>
+                        <Button onPress={FlatlistDemo} color='green' title='Call'></Button>
+                        <Button style={{ marginTop: 10 }} onPress={FlatlistDemo} color='skyblue' title='Email'></Button>
+                    </View>
                 </View>
 
             </View>
         )
     }
     static navigationOptions = {
-      title:"DinDin",
-      headerTitleStyle:{
-          fontSize: 20,
-          fontWeight: undefined,
-          alignSelf: 'center',
-          flexGrow:1,
-          textAlign:'center',
-      },
-      headerStyle: {
-          paddingVertical:15,
-      },
-      headerLeft: (
-          <View style={{
-                  margin:5,
-                  paddingHorizontal:5,
-              }}>
-              <Image source={require('../assets/sidemenu.png')} />
-          </View>
-      ),
-      headerRight:(
-          <View style={{
-              margin:5,
-              paddingHorizontal:10,
-          }}>
-              <Image source={require('../assets/search.png')} />
-          </View>
-      )
-  
-};
-renderSeparator = () => {
-  return (
-    <View
-      style={{
-        height: 1,
-        width: "86%",
-        backgroundColor: "#CED0CE",
-        marginLeft: "14%"
-      }}
-    />
-  );
-};
+        title: "DinDin",
+        headerTitleStyle: {
+            fontSize: 20,
+            fontWeight: undefined,
+            alignSelf: 'center',
+            flexGrow: 1,
+            textAlign: 'center',
+        },
+        headerStyle: {
+            paddingVertical: 15,
+        },
+        headerLeft: (
+            <View style={{
+                margin: 5,
+                paddingHorizontal: 5,
+            }}>
+                <Image source={require('../assets/sidemenu.png')} />
+            </View>
+        ),
+        headerRight: (
+            <View style={{
+                margin: 5,
+                paddingHorizontal: 10,
+            }}>
+                <Image source={require('../assets/search.png')} />
+            </View>
+        )
+
+    };
+    renderSeparator = () => {
+        return (
+            <View
+                style={{
+                    height: 1,
+                    width: "86%",
+                    backgroundColor: "#CED0CE",
+                    marginLeft: "14%"
+                }}
+            />
+        );
+    };
     render() {
+        if(this.state.hasData){
+            console.log(this.state.invitationsData)
+        }else{
+            console.log(this.state.hasData)
+        }
+        
+
         if (this.state.podCastList !== null) {
             return (
                 <View style={styles.container}>
@@ -110,23 +152,23 @@ const styles = StyleSheet.create(
             backgroundColor: 'white',
             margin: 15,
             height: 100,
-        
+
             borderWidth: 1,
             borderColor: 'lightgrey',
             borderRadius: 8,
         },
         topContainer: {
-           flex:1,
-           flexDirection: 'row',
+            flex: 1,
+            flexDirection: 'row',
         },
         image: {
             width: 60,
             height: 60,
-            borderRadius:50,
+            borderRadius: 50,
             margin: 10,
             marginLeft: 15,
         },
-        text:{
+        text: {
             marginTop: 5,
             marginLeft: 10
         },
@@ -134,6 +176,6 @@ const styles = StyleSheet.create(
             marginTop: 10,
             borderRadius: 8,
         },
-        
+
     }
 )

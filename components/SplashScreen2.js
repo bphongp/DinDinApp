@@ -99,11 +99,11 @@ export default class SplashScreen extends React.Component {
         /* this is what will be rendered for the splash screen */
         return (
             <View style={styles.container}>
-                  <View style = {{flex: 1}}>
+                    <View style = {{flex: 1}}>
                         <View style = {{flex:.62, backgroundColor : 'white',overflow: 'visible',justifyContent:'center',alignItems:'center'}}>
                           
                                 <ImageBackground resizeMode="contain" style= {{width:300, height:'100%', flexDirection: 'column', flex: 1}} source={require('../assets/logo.png')} >
-                                    <View style = {{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginTop:'5%'}}><Image  resizeMode="contain" style ={{ opacity: this.state.image1Opacity}} source = {require('../assets/man.png')}/></View>
+                                    <View style = {{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginTop:'15%'}}><Image  resizeMode="contain" style ={{ opacity: this.state.image1Opacity}} source = {require('../assets/man.png')}/></View>
                                     <View style = {{flex:1, flexDirection: 'row'}}><Image  resizeMode="contain" style ={{ opacity: this.state.image2Opacity,}} source = {require('../assets/woman.png')}/></View>
                                     <View style = {{flex:1, flexDirection: 'row'}}><Image  resizeMode="contain" style ={{ marginLeft: '65%', bottom: '0%', opacity: this.state.image3Opacity,}} source = {require('../assets/glasses.png')}/></View>
                                 </ImageBackground>
@@ -115,11 +115,13 @@ export default class SplashScreen extends React.Component {
                             <Button style ={{backgroundColor: '#3b5998', marginTop:'20%'}} onPress={this.login.bind(this)} title='Connect to FaceBook'/>
                         </View>
                         <View style = {{flex: .08}}>
-                <TouchableOpacity style = {{flex: 1}} onPress={() => {this.props.navigation.navigate('Flatlist')}}>
-                        <Image style= {{width: '100%', height: '100%'}} source={require('../assets/getStarted.png')} />
-                </TouchableOpacity>
-                </View>
-                  </View>
+
+                            <TouchableOpacity style = {{flex: 1}} onPress={() => {this.props.navigation.navigate('Flatlist')}}>
+                                    <Image style= {{width: '100%', height: '100%'}} source={require('../assets/getStarted.png')} />
+                            </TouchableOpacity>
+                
+                        </View>
+                    </View>
                  
             </View>
 

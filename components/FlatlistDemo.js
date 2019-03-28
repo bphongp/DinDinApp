@@ -2,27 +2,25 @@ import * as React from 'react'
 import { StyleSheet, Text, View, Image, FlatList, Button, TouchableOpacity } from 'react-native'
 
 import firebase from 'firebase';
-
 const firebaseConfig = {
-    apiKey: "AIzaSyAfNTdT8nd5lNr5E_t8XsQyuGGC3zlppS8",
-    authDomain: "mobile-d433b.firebaseapp.com",
-    databaseURL: "https://mobile-d433b.firebaseio.com",
-    projectId: "mobile-d433b",
-    storageBucket: "mobile-d433b.appspot.com",
-    messagingSenderId: "528264911283"
+    apiKey: "AIzaSyD50J9Y7FH9l2tfwZ_qOJCCjnjpRBaFrR4",
+    authDomain: "dindin-46b55.firebaseapp.com",
+    databaseURL: "https://dindin-46b55.firebaseio.com",
+    projectId: "dindin-46b55",
+    storageBucket: "dindin-46b55.appspot.com",
+    messagingSenderId: "36010701085"
 };
 
+
 export default class FlatlistDemo extends React.Component {
+
     constructor() {
         super()
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        this.setupPeopleListener()
-
+        this.readUserData = this.readUserData.bind(this)
         this.state = {
-            podCastList: null, 
-            hasData:  false
+            podCastList: null,
+            eventsData: null,
+            hasData: false
         }
     }
 
@@ -34,32 +32,28 @@ export default class FlatlistDemo extends React.Component {
         })
     }
     componentWillMount() {
-        //Check to see if already initialized
-       
-
-        this.getPodCastData()
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        this.readUserData()
     }
 
 
+    readUserData() {
+       console.log("readUserData Fired")
 
-    setupPeopleListener() {
-        let currentState = this.state
-        console.log("fired listener")
-        firebase.database().ref('Invitations/').on('value', (snapshot) => {
-            console.log(JSON.stringify(snapshot.val()))
-            invitations = snapshot.val()
-                currentState.setState({
-                invitationsData : invitations, 
-                hasData: true
-            })
-        });
+        this.database = firebase.database();
+        firebase.database().ref('events/').on("value", snapshot => {
+            this.setState({ eventsData: snapshot.val(), hasData: true })
+            //console.log(this.state.eventsData)
+        })
     }
     keyExtractor(item) {
-        return item.email.toString()
+        return item.name.toString()
     }
 
     renderRow({ item }) {
-
+        console.log(item)
         return (
             <View style={styles.card}>
                 <View style={styles.topContainer}>
@@ -125,14 +119,10 @@ export default class FlatlistDemo extends React.Component {
         );
     };
     render() {
-        if(this.state.hasData){
-            console.log(this.state.invitationsData)
-        }else{
-            console.log(this.state.hasData)
-        }
-        
 
-        if (this.state.podCastList !== null) {
+
+        if (this.state.hasData == true) {
+            console.log("entered render")
             return (
                 <View style={styles.container}>
                         <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
@@ -140,7 +130,7 @@ export default class FlatlistDemo extends React.Component {
                             </TouchableOpacity>
                     <FlatList
                         style={styles.ScollablePodCasts}
-                        data={this.state.podCastList}
+                        data={this.state.eventsData}
                         renderItem={this.renderRow}
                         keyExtractor={this.keyExtractor}
                         ItemSeparatorComponent={this.renderSeparator}

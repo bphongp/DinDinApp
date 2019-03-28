@@ -4,6 +4,7 @@ import SplashScreen from './components/SplashScreen2';
 import HomeScreen from './components/HomeScreen';
 import FlatlistDemo from './components/FlatlistDemo';
 import InvitationCard from './components/InvitationCard';
+import AddNewEvent from './components/AddNewEvent';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 const rootStack = createStackNavigator(
@@ -12,6 +13,7 @@ const rootStack = createStackNavigator(
     Home: HomeScreen,
     Flatlist: FlatlistDemo,
     InvitationCard: InvitationCard,
+    AddNewEvent:AddNewEvent,
   },
   {
     initialRouteName: 'Splash',

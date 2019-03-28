@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { StyleSheet, Text, View, Image, FlatList, Button } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Button, TouchableOpacity } from 'react-native'
 
 import firebase from 'firebase';
 
@@ -64,17 +64,22 @@ export default class FlatlistDemo extends React.Component {
             <View style={styles.card}>
                 <View style={styles.topContainer}>
                     <Image style={styles.image} source={{ uri: item.picture.thumbnail }} />
-                    <View style={{ marginTop: 10, flex: 2 }}>
+                    <View style={{ marginTop: '3%', flex: 2 }}>
                         <Text style={styles.text}>{item.name.first}</Text>
-                        <Text style={styles.text}>Sunday 17 June - 8:00</Text>
+                        <Text style={styles.text}>8:00 pm</Text>
                     </View>
-                    <View style={{ flex: .75 }}>
-                        <Button onPress={FlatlistDemo} color='green' title='Call'></Button>
-                        <Button style={{ marginTop: 10 }} onPress={FlatlistDemo} color='skyblue' title='Email'></Button>
+                    <View style={{ flex: .75, flexDirection: 'row'}}>
+                        <TouchableOpacity style ={{marginTop:'40%'}} onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                                <Image source={require('../assets/call.png')} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style ={{marginTop:'40%', marginLeft: '20%'}} onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                                <Image source={require('../assets/email.png')} />
+                        </TouchableOpacity>
+
                     </View>
                 </View>
-
             </View>
+
         )
     }
     static navigationOptions = {
@@ -112,9 +117,9 @@ export default class FlatlistDemo extends React.Component {
             <View
                 style={{
                     height: 1,
-                    width: "86%",
+                    width: "90%",
                     backgroundColor: "#CED0CE",
-                    marginLeft: "14%"
+                    marginLeft: "5%"
                 }}
             />
         );
@@ -130,6 +135,9 @@ export default class FlatlistDemo extends React.Component {
         if (this.state.podCastList !== null) {
             return (
                 <View style={styles.container}>
+                        <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                                <Image source={require('../assets/addnewevent.png')} />
+                            </TouchableOpacity>
                     <FlatList
                         style={styles.ScollablePodCasts}
                         data={this.state.podCastList}
@@ -151,11 +159,11 @@ const styles = StyleSheet.create(
             overflow: 'hidden',
             backgroundColor: 'white',
             margin: 15,
-            height: 100,
+            height: 75,
 
-            borderWidth: 1,
-            borderColor: 'lightgrey',
-            borderRadius: 8,
+            //borderWidth: 1,
+            //borderColor: 'lightgrey',
+            //borderRadius: 8,
         },
         topContainer: {
             flex: 1,

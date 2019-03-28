@@ -60,7 +60,7 @@ export default class FlatlistDemo extends React.Component {
                     <Image style={styles.image} source={{ uri: item.picture.thumbnail }} />
                     <View style={{ marginTop: '3%', flex: 2 }}>
                         <Text style={styles.text}>{item.name.first}</Text>
-                        <Text style={styles.text}>8:00 pm</Text>
+                        <Text style={styles.text}>{item.date}</Text>
                     </View>
                     <View style={{ flex: .75, flexDirection: 'row'}}>
                         <TouchableOpacity style ={{marginTop:'40%'}} onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>

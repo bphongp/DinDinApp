@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Dimensions, Image } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { Constants, MapView, Location, Permissions } from 'expo';
 
-export default class App extends Component {
+export default class AddNewEvent extends Component {
     static navigationOptions = {
         title:"DinDin",
         headerTitleStyle:{
@@ -20,7 +20,7 @@ export default class App extends Component {
                     margin:5,
                     paddingHorizontal:5,
                 }}>
-                <Image source={require('../assets/sidemenu.png')} />
+                <Image source={require('../assets/back.png')} />
             </View>
         ),
         headerRight:(
@@ -28,7 +28,6 @@ export default class App extends Component {
                 margin:5,
                 paddingHorizontal:10,
             }}>
-                <Image source={require('../assets/search.png')} />
             </View>
         )
     
@@ -69,7 +68,7 @@ export default class App extends Component {
   render() {
     return (
         <View style={styles.container}>
-        
+            <Text style = {styles.subText}>What time is dinner?</Text>
             {
             this.state.locationResult === null ?
             <Text>Finding your current location...</Text> :
@@ -93,7 +92,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
     marginTop:'75%'
   },
@@ -102,6 +100,5 @@ const styles = StyleSheet.create({
       color: 'grey',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop:'10%'
   }
 });

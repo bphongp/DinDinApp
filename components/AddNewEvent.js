@@ -15,14 +15,6 @@ export default class AddNewEvent extends Component {
         headerStyle: {
             paddingVertical:15,
         },
-        headerLeft: (
-            <View style={{
-                    margin:5,
-                    paddingHorizontal:5,
-                }}>
-                <Image source={require('../assets/back.png')} />
-            </View>
-        ),
         headerRight:(
             <View style={{
                 margin:5,

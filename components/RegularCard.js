@@ -36,7 +36,7 @@ const styles = StyleSheet.create(
             borderRadius: 8,
         },
         topContainer: {
-           flex:1,
+           height: 100,
            flexDirection: 'row',
         },
         image: {

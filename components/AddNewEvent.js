@@ -1,9 +1,8 @@
-import React from 'react';
-import { View, StyleSheet, Text, Dimensions, Image} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { Constants, MapView, Location, Permissions } from 'expo';
 
-export default class AddNewEvent extends React.Component {
-    /*navigationOptions--this allows to customize the header */
-    /*****to do: how to align navigation text */
+export default class AddNewEvent extends Component {
     static navigationOptions = {
         title:"DinDin",
         headerTitleStyle:{
@@ -21,7 +20,7 @@ export default class AddNewEvent extends React.Component {
                     margin:5,
                     paddingHorizontal:5,
                 }}>
-                <Image source={require('../assets/sidemenu.png')} />
+                <Image source={require('../assets/back.png')} />
             </View>
         ),
         headerRight:(
@@ -29,55 +28,77 @@ export default class AddNewEvent extends React.Component {
                 margin:5,
                 paddingHorizontal:10,
             }}>
-                <Image source={require('../assets/search.png')} />
             </View>
         )
     
     };
+    
+  state = {
+    mapRegion: null,
+    hasLocationPermissions: false,
+    locationResult: null
+  };
 
-render() {
-const stockValue = this.props.navigation.getParam('stockValue', 'not recorded');
+  componentDidMount() {
+    this.getLocationAsync();
+  }
+
+  _handleMapRegionChange = mapRegion => {
+    console.log(mapRegion);
+    this.setState({ mapRegion });
+  };
+
+  async getLocationAsync (){
+   let { status } = await Permissions.askAsync(Permissions.LOCATION);
+   if (status !== 'granted') {
+     this.setState({
+       locationResult: 'Permission to access location was denied',
+     });
+   } else {
+     this.setState({ hasLocationPermissions: true });
+   }
+
+   let location = await Location.getCurrentPositionAsync({});
+   this.setState({ locationResult: JSON.stringify(location) });
+   
+   // Center the map on the location we just fetched.
+    this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
+  }
+
+  render() {
     return (
-        <View style ={styles.container} >
-            <View style={styles.container}>
-                <View style = {{alignItems: "center"}}>
-                <Text style={styles.subText} >What time is dinner?</Text>
-                </View>
-            </View>
-            
+        <View style={styles.container}>
+            <Text style = {styles.subText}>What time is dinner?</Text>
+            {
+            this.state.locationResult === null ?
+            <Text>Finding your current location...</Text> :
+            this.state.hasLocationPermissions === false ?
+                <Text>Location permissions are not granted.</Text> :
+                this.state.mapRegion === null ?
+                <Text>Map region doesn't exist.</Text> :
+                <MapView
+                style={{ alignSelf: 'stretch', height: 400 }}
+                region={this.state.mapRegion}
+                onRegionChange={this._handleMapRegionChange}
+                />
+            }
         </View>
-
-    )
+    );
+  }
 }
-}
 
-const styles = StyleSheet.create(
-    {
-        container: {
-            flex: 0,
-            backgroundColor: '#fff',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        titleText: {
-            fontSize: 28,
-            backgroundColor: '#fff',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 50,
-        },
-        subText: {
-            fontSize: 15,
-            color: 'grey',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop:'10%'
-        },
-        getStartedButton: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
-        }
-
-    }
-)
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+    marginTop:'75%'
+  },
+  subText: {
+      fontSize: 15,
+      color: 'grey',
+      alignItems: 'center',
+      justifyContent: 'center',
+  }
+});

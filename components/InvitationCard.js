@@ -1,25 +1,63 @@
-import React from 'react';
+import * as React from 'react'
 import { View, StyleSheet, Text, Dimensions, Image, Button} from 'react-native'
-const imageUrl = 'https://cdn.inquisitr.com/wp-content/uploads/2016/07/Jessica-Jung.jpg'
+import firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyD50J9Y7FH9l2tfwZ_qOJCCjnjpRBaFrR4",
+    authDomain: "dindin-46b55.firebaseapp.com",
+    databaseURL: "https://dindin-46b55.firebaseio.com",
+    projectId: "dindin-46b55",
+    storageBucket: "dindin-46b55.appspot.com",
+    messagingSenderId: "36010701085"
+};
 export default class InvitationCard extends React.Component {
-    
+    constructor(props) {
+        super(props)
+        
+        this.state = {
+            inviteObj: props.inviteObj,
+            inviteKey: props.inviteKey
+        }
+      
+    }
+    componentWillMount() {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+    }
+    acceptInvite(object) {
+        console.log("Accept entered")
+        //console.log(this.state.inviteKey)
+        firebase.database().ref('events/').push({
+            name: object.name,
+            date: object.date,
+            photo: object.photo
+        })
+        firebase.database().ref('invites/').child(this.props.inviteKey).remove();
+      }
+    declineInvite(){
+        firebase.database().ref('invites/').child(this.props.inviteKey).remove();
+    }
     render() {
+        console.log("invite card render entered")
+        console.log("invite key at card " + this.props.inviteKey)
         return (
             <View style = {styles.card}>
                 <View style = {styles.topContainer}>
-               <Image style = {styles.image} source={{ uri: 'https://data.whicdn.com/images/261732361/superthumb.jpg?t=1475938523' }} />
+               <Image style = {styles.image} source={{ uri: this.props.inviteObj.photo }} />
                     <View style = {{marginTop: 10}}>
-                    <Text style = {styles.text}>Krystal Jung</Text>    
-                    <Text style = {styles.text}>Sunday 17 June - 8:00</Text> 
+                    <Text style = {styles.text}>{this.props.inviteObj.name}</Text>    
+                    <Text style = {styles.text}>{this.props.inviteObj.date.month + " " + this.props.inviteObj.date.day + " " + this.props.inviteObj.date.time}</Text> 
                     </View>   
                 </View>
                 <View style = {{flexDirection: 'row'}}>
                    
                     <View style = {{flex:1}}>
-                    <Button  onPress={InvitationCard} color = '#EC7063' title = 'Decline'></Button>
+                    <Button  onPress={() => this.declineInvite()} color = '#EC7063' title = 'Decline'></Button>
                     </View>
                     <View style = {{flex:1}}>
-                    <Button  onPress={InvitationCard} color = '#82E0AA' title = 'Accept'></Button>
+                    <Button  onPress={() => this.acceptInvite(this.props.inviteObj)} color = '#82E0AA' title = 'Accept'></Button>
                     </View>
                 
                 </View>
@@ -34,11 +72,12 @@ const styles = StyleSheet.create(
             overflow: 'hidden',
             backgroundColor: 'white',
             margin: 15,
-            height: 150,
+            height: 125,
         
             borderWidth: 1,
             borderColor: 'lightgrey',
             borderRadius: 8,
+
         },
         topContainer: {
            flex:1,

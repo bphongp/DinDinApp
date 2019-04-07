@@ -36,11 +36,9 @@ export default class InvitePeople extends React.Component {
     };
 
     render() {
-    const stockValue = this.props.navigation.getParam('stockValue', 'not recorded');
         return (
             <View style ={styles.container} >
                 <View style={styles.container}>
-                    <Text style={styles.titleText}>{strings('login.login_button')}</Text>
                     <Text style={styles.subText}>LOL</Text>
                 </View>
                 

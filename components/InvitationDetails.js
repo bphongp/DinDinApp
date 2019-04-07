@@ -15,10 +15,10 @@ export default class InvitationCard extends React.Component {
         super(props)
         
         this.state = {
-            inviteObj: props.inviteObj,
-            inviteKey: props.inviteKey
+            inviteObj: this.props.navigation.state.params.inviteObj,
+            inviteKey: this.props.navigation.state.params.inviteKey,
         }
-      
+        console.log("Invite key in invitationdetails " + this.state.inviteKey)
     }
     componentWillMount() {
         if (!firebase.apps.length) {
@@ -34,25 +34,28 @@ export default class InvitationCard extends React.Component {
             date: object.date,
             photo: object.photo
         })
-        firebase.database().ref('invites/').child(this.props.inviteKey).remove();
+        firebase.database().ref('invites/').child(this.state.inviteKey).remove();
+        this.props.navigation.goBack()
       }
     declineInvite(){
-        firebase.database().ref('invites/').child(this.props.inviteKey).remove();
+        firebase.database().ref('invites/').child(this.state.inviteKey).remove();
+        this.props.navigation.goBack()
     }
     render() {
         //console.log("invite card render entered")
-        console.log("invite key at card " + this.props.inviteKey)
+        //console.log("invite key at card " + this.state.inviteKey)
         return (
             <View style = {styles.card}>
                 <View style = {styles.topContainer}>
                
-               <Image style = {styles.image} source={{ uri: this.props.inviteObj.photo }} />
-                  <TouchableOpacity style = {{flex: 1}} onPress={() => this.props.navigation.navigate('InvitationDetails',{inviteObj:this.props.inviteObj, inviteKey:this.props.inviteKey})}>
-                    <View style = {{marginTop: 10}}>
-                    <Text style = {styles.text}>{this.props.inviteObj.name}</Text>    
-                    <Text style = {styles.text}>{this.props.inviteObj.date.month + " " + this.props.inviteObj.date.day + " " + this.props.inviteObj.date.time}</Text> 
+               <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
+                  
+                    <View style = {{marginTop: 10, alignItems: 'center'}}>
+                    <Text style = {{marginTop: 5, fontSize: 20,}}>Restuarant Name, Address</Text>    
+                    <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
+                    <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
                     </View>   
-                    </TouchableOpacity>
+                  
                 </View>
                 <View style = {{flexDirection: 'row'}}>
                    
@@ -60,7 +63,7 @@ export default class InvitationCard extends React.Component {
                     <Button  onPress={() => this.declineInvite()} color = '#EC7063' title = 'Decline'></Button>
                     </View>
                     <View style = {{flex:1}}>
-                    <Button  onPress={() => this.acceptInvite(this.props.inviteObj)} color = '#82E0AA' title = 'Accept'></Button>
+                    <Button  onPress={() => this.acceptInvite(this.state.inviteObj)} color = '#82E0AA' title = 'Accept'></Button>
                     </View>
                 
                 </View>
@@ -76,7 +79,7 @@ const styles = StyleSheet.create(
             overflow: 'hidden',
             backgroundColor: 'white',
             margin: 15,
-            height: 125,
+            height: 220,
         
             borderWidth: 1,
             borderColor: 'lightgrey',
@@ -85,18 +88,17 @@ const styles = StyleSheet.create(
         },
         topContainer: {
            flex:1,
-           flexDirection: 'row'
+           justifyContent:'center',
+           alignItems:'center'
         },
         image: {
             width: 60,
             height: 60,
             borderRadius:50,
-            margin: 10,
-            marginLeft: 15,
+            
         },
         text:{
             marginTop: 5,
-            marginLeft: 10
         },
         button: {
             width: 200,

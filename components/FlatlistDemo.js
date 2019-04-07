@@ -14,8 +14,8 @@ const firebaseConfig = {
 
 export default class FlatlistDemo extends React.Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             eventsData: null,
             hasData: false,
@@ -35,7 +35,7 @@ export default class FlatlistDemo extends React.Component {
 
   
     readUserData() {
-       console.log("readUserData Fired")
+       //console.log("readUserData Fired")
        let currentContext = this
         this.database = firebase.database();
         firebase.database().ref('events/').on("value", snapshot => {
@@ -45,7 +45,7 @@ export default class FlatlistDemo extends React.Component {
 
         firebase.database().ref('invites/').on("value", snapshot => {
             currentContext.setState({ invitesData:  snapshot.val() == null ? null : Object.values(snapshot.val()), hasInviteData: snapshot.val() == null ? false : true, inviteKey: snapshot.val() == null ? null : Object.keys(snapshot.val())[0] })
-            console.log(snapshot.val())
+            //console.log(snapshot.val())
             //this.forceUpdate();
         })
     }
@@ -178,7 +178,7 @@ export default class FlatlistDemo extends React.Component {
             </View>
 
                         {this.state.hasInviteData == true ? (
-                        <InvitationCard inviteObj = {this.state.invitesData[0]} inviteKey = {this.state.inviteKey} >
+                        <InvitationCard inviteObj = {this.state.invitesData[0]} inviteKey = {this.state.inviteKey} navigation ={this.props.navigation} >
                         </InvitationCard> ) : <View></View>
                         }
                     <View style={{ height: 1, width: "90%", backgroundColor: "#CED0CE", marginLeft: "5%" }} />

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Dimensions, Image, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Image, TouchableOpacity, TextInput, DatePickerIOS } from 'react-native';
 import { Constants, MapView, Location, Permissions } from 'expo';
+//import { TimePicker, WheelPicker } from 'react-native-wheel-picker-android'
+
 import firebase from 'firebase';
 
 const firebaseConfig = {
@@ -18,9 +20,13 @@ export default class AddNewEvent extends Component {
           mapRegion: null,
           hasLocationPermissions: false,
           locationResult: null,
-          text:''
+          text:'',
+          chosenDate: new Date()
       }
     };
+    setDate(newDate) {
+      this.setState({chosenDate: newDate})
+    }
     static navigationOptions = {
         title:"DinDin",
         headerTitleStyle:{
@@ -55,7 +61,7 @@ export default class AddNewEvent extends Component {
           firebase.initializeApp(firebaseConfig);
       }
       
-  }
+    }
     async getLocationAsync (){
      let { status } = await Permissions.askAsync(Permissions.LOCATION);
      if (status !== 'granted') {
@@ -97,6 +103,8 @@ export default class AddNewEvent extends Component {
                 />
             }
             */
+           onTimeSelected = date => {}
+
   render() {
     return (
       <View style={{flex:1}}>

@@ -16,14 +16,6 @@ export default class InvitePeople extends React.Component {
             headerStyle: {
                 paddingVertical:15,
             },
-            headerLeft: (
-                <View style={{
-                        margin:5,
-                        paddingHorizontal:5,
-                    }}>
-                    <Image source={require('../assets/sidemenu.png')} />
-                </View>
-            ),
             headerRight:(
                 <View style={{
                     margin:5,

@@ -16,14 +16,6 @@ export default class InvitePeople extends React.Component {
             headerStyle: {
                 paddingVertical:15,
             },
-            headerLeft: (
-                <View style={{
-                        margin:5,
-                        paddingHorizontal:5,
-                    }}>
-                    <Image source={require('../assets/sidemenu.png')} />
-                </View>
-            ),
             headerRight:(
                 <View style={{
                     margin:5,
@@ -36,11 +28,9 @@ export default class InvitePeople extends React.Component {
     };
 
     render() {
-    const stockValue = this.props.navigation.getParam('stockValue', 'not recorded');
         return (
             <View style ={styles.container} >
                 <View style={styles.container}>
-                    <Text style={styles.titleText}>{strings('login.login_button')}</Text>
                     <Text style={styles.subText}>LOL</Text>
                 </View>
                 

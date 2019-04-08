@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { View, StyleSheet, Text, Dimensions, Image, Button, TouchableOpacity} from 'react-native'
 import firebase from 'firebase';
+import { Constants, MapView, Location, Permissions } from 'expo';
 
 const firebaseConfig = {
     apiKey: "AIzaSyD50J9Y7FH9l2tfwZ_qOJCCjnjpRBaFrR4",
@@ -36,38 +37,93 @@ export default class InvitationCard extends React.Component {
         })
         firebase.database().ref('invites/').child(this.state.inviteKey).remove();
         this.props.navigation.goBack()
-      }
+    }
     declineInvite(){
         firebase.database().ref('invites/').child(this.state.inviteKey).remove();
         this.props.navigation.goBack()
     }
+    componentDidMount() {
+        this.getLocationAsync();
+    }
+    
+    _handleMapRegionChange = mapRegion => {
+        console.log(mapRegion);
+        this.setState({ mapRegion });
+    };
+    
+    async getLocationAsync (){
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            this.setState({
+                locationResult: 'Permission to access location was denied',
+            });
+        } else {
+            this.setState({ hasLocationPermissions: true });
+        }
+    
+        let location = await Location.getCurrentPositionAsync({});
+        this.setState({ locationResult: JSON.stringify(location) });
+       
+        // Center the map on the location we just fetched.
+        this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
+    }
+/*
+                    {
+                        this.state.locationResult === null ?
+                        <Text>Finding your current location...</Text> :
+                        this.state.hasLocationPermissions === false ?
+                            <Text>Location permissions are not granted.</Text> :
+                            this.state.mapRegion === null ?
+                            <Text>Map region doesn't exist.</Text> :
+                            <MapView
+                                style={{ alignSelf: 'stretch', height: 400 }}
+                                region={this.state.mapRegion}
+                                onRegionChange={this._handleMapRegionChange}
+                            />
+                    }
+                    
+*/
     render() {
         //console.log("invite card render entered")
         //console.log("invite key at card " + this.state.inviteKey)
         return (
-            <View style = {styles.card}>
-                <View style = {styles.topContainer}>
-               
-               <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
-                  
-                    <View style = {{marginTop: 10, alignItems: 'center'}}>
-                    <Text style = {{marginTop: 5, fontSize: 20,}}>Restuarant Name, Address</Text>    
-                    <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
-                    <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
-                    </View>   
-                  
-                </View>
-                <View style = {{flexDirection: 'row'}}>
-                   
-                    <View style = {{flex:1}}>
-                    <Button  onPress={() => this.declineInvite()} color = '#EC7063' title = 'Decline'></Button>
-                    </View>
-                    <View style = {{flex:1}}>
-                    <Button  onPress={() => this.acceptInvite(this.state.inviteObj)} color = '#82E0AA' title = 'Accept'></Button>
-                    </View>
+            <View style ={{flex:1}}>
+                <View style = {styles.card}>
+                    <View style = {styles.topContainer}>
                 
+                        <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
+                    
+                        <View style = {{marginTop: 10, alignItems: 'center'}}>
+                        <Text style = {{marginTop: 5, fontSize: 20,}}>Restuarant Name, Address</Text>    
+                        <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
+                        <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
+                        </View>   
+                    
+                    </View>
+                    <View style = {{flexDirection: 'row'}}>
+                    
+                        <View style = {{flex:1}}>
+                        <Button  onPress={() => this.declineInvite()} color = '#EC7063' title = 'Decline'></Button>
+                        </View>
+                        <View style = {{flex:1}}>
+                        <Button  onPress={() => this.acceptInvite(this.state.inviteObj)} color = '#82E0AA' title = 'Accept'></Button>
+                        </View>
+                    
+                    </View>
                 </View>
-                
+                    {
+                        this.state.locationResult === null ?
+                        <Text>Finding your current location...</Text> :
+                        this.state.hasLocationPermissions === false ?
+                            <Text>Location permissions are not granted.</Text> :
+                            this.state.mapRegion === null ?
+                            <Text>Map region doesn't exist.</Text> :
+                            <MapView
+                                style={{ alignSelf: 'stretch', height: 400 }}
+                                region={this.state.mapRegion}
+                                onRegionChange={this._handleMapRegionChange}
+                            />
+                    }
             </View>
         )
     }    

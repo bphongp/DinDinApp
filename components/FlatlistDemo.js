@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { StyleSheet, Text, View, Image, FlatList, Button, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Button, TouchableOpacity, ScrollView} from 'react-native'
 import InvitationCard from './InvitationCard';
 import firebase from 'firebase';
 const firebaseConfig = {
@@ -22,10 +22,18 @@ export default class FlatlistDemo extends React.Component {
             invitesData:null,
             inviteKey:null,
             hasInviteData: false,
+            date: "date"
         }
     }
 
-   
+    addEvent(object) {
+        //console.log("Accept entered")
+        //console.log(this.state.inviteKey)
+        firebase.database().ref('events/').push({
+            date: object.date,
+        })
+    }
+
     componentWillMount() {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -120,6 +128,8 @@ export default class FlatlistDemo extends React.Component {
             />
         );
     };
+    //this.addEvent(this.props.date)
+    months = ["Janurary", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     render() {
         if (this.state.hasData == true) {
             return (

@@ -7,6 +7,7 @@ import InvitationCard from './components/InvitationCard';
 import AddNewEvent from './components/AddNewEvent';
 import InvitationDetails from './components/InvitationDetails';
 import InvitePeople from './components/InvitePeople';
+import CarouselTest from './components/CarouselTest';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 const rootStack = createStackNavigator(
@@ -18,6 +19,7 @@ const rootStack = createStackNavigator(
     AddNewEvent:AddNewEvent,
     InvitationDetails:InvitationDetails,
     InvitePeople: InvitePeople,
+    CarouselTest: CarouselTest,
   },
   {
     initialRouteName: 'Splash',
@@ -26,13 +28,13 @@ const rootStack = createStackNavigator(
 
 const AppContainer = createAppContainer(rootStack);
 
-<AppContainer persistenceKey={"NavigationState"} />;
+
 
 export default class App extends React.Component {
 
   render() {
     return (
-        <AppContainer/>
+      <AppContainer persistenceKey={"NavigationState"} />
     );
   }
 }

@@ -2,6 +2,8 @@ import * as React from 'react'
 import { StyleSheet, Text, View, Image, FlatList, Button, TouchableOpacity, ScrollView} from 'react-native'
 import InvitationCard from './InvitationCard';
 import firebase from 'firebase';
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyD50J9Y7FH9l2tfwZ_qOJCCjnjpRBaFrR4",
     authDomain: "dindin-46b55.firebaseapp.com",
@@ -17,9 +19,10 @@ export default class FlatlistDemo extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            eventsData: null,
+            eventsDataAll: [],
+            eventsData: [],
             hasData: false,
-            invitesData:null,
+            invitesData: [],
             inviteKey:null,
             hasInviteData: false,
             date: "date"
@@ -33,7 +36,55 @@ export default class FlatlistDemo extends React.Component {
             date: object.date,
         })
     }
-
+    filterMonth(month){
+        let data = this.state.eventsDataAll
+        const result = data.filter(data => data.date.month == month);
+        this.setState({ eventsData: result })
+        if(month == 0){
+            this.setState({ eventsData: data})
+        }
+    }
+    getMonth(number){
+        if(number == 1){
+            return "Jan"
+        }
+        else if(number == 2){
+            return "Feb"
+        }
+        else if(number == 3){
+            return "Mar"
+        }
+        else if(number == 4){
+            return "Apr"
+        }
+        else if(number == 5){
+            return "May"
+        }
+        else if(number == 6){
+            return "Jun"
+        }
+        else if(number == 7){
+            return "July"
+        }
+        else if(number == 8){
+            return "Aug"
+        }
+        else if(number == 9){
+            return "Sep"
+        }
+        else if(number == 10){
+            return "Oct"
+        }
+        else if(number == 11){
+            return "Nov"
+        }
+        else if(number == 12){
+            return "Dec"
+        }
+        else{
+            return ""
+        }
+    }
     componentWillMount() {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -47,7 +98,7 @@ export default class FlatlistDemo extends React.Component {
        let currentContext = this
         this.database = firebase.database();
         firebase.database().ref('events/').on("value", snapshot => {
-            this.setState({ eventsData: Object.values(snapshot.val()), hasData: true, })
+            this.setState({ eventsData: Object.values(snapshot.val()), hasData: true, eventsDataAll: Object.values(snapshot.val())})
             
         })
 
@@ -70,13 +121,13 @@ export default class FlatlistDemo extends React.Component {
                     <Image style={styles.image} source={{ uri: item.photo }} />
                     <View style={{ marginTop: '3%', flex: 2 }}>
                         <Text style={styles.text}>{item.name}</Text>
-                        <Text style={styles.text}>{item.date.month + " " + item.date.day + " " + item.date.time}</Text>
+                        <Text style={styles.text}>{ item.date.month + "/" + item.date.day + " " + item.date.time}</Text>
                     </View>
                     <View style={{ flex: .75, flexDirection: 'row'}}>
-                        <TouchableOpacity style ={{marginTop:'40%'}} onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                        <TouchableOpacity style ={{marginTop:'10%'}} onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
                                 <Image source={require('../assets/call.png')} />
                         </TouchableOpacity>
-                        <TouchableOpacity style ={{marginTop:'40%', marginLeft: '20%'}} onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                        <TouchableOpacity style ={{marginTop:'10%', marginLeft: '20%'}} onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
                                 <Image source={require('../assets/email.png')} />
                         </TouchableOpacity>
 
@@ -131,63 +182,70 @@ export default class FlatlistDemo extends React.Component {
     //this.addEvent(this.props.date)
     months = ["Janurary", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     render() {
-        if (this.state.hasData == true) {
             return (
                 <View style = {{ flex: 1,}}>
                 <View style = {styles.container}>
                 <ScrollView style={{flex:0,}} horizontal = {true}>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(0)}}>
+                        <Text style = {{color:'lightgrey'}}>All</Text>
+                    </TouchableOpacity>
+                    <Text>     </Text>
+                    <TouchableOpacity onPress={() => {this.filterMonth(1)}}>
                         <Text style = {{color:'lightgrey'}}>January</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(2)}}>
                         <Text style = {{color:'lightgrey'}}>Febuary</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(3)}}>
                         <Text style = {{color:'lightgrey'}}>March</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(4)}}>
                         <Text style = {{color:'lightgrey'}}>April</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(5)}}>
                         <Text style = {{color:'lightgrey'}}>May</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(6)}}>
                         <Text style = {{color:'lightgrey'}}>June</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(7)}}>
                         <Text style = {{color:'lightgrey'}}>July</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(8)}}>
                         <Text style = {{color:'lightgrey'}}>August</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(9)}}>
                         <Text style = {{color:'lightgrey'}}>September</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(10)}}>
                         <Text style = {{color:'lightgrey'}}>October</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(11)}}>
                         <Text style = {{color:'lightgrey'}}>November</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
-                    <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={() => {this.filterMonth(12)}}>
                         <Text style = {{color:'lightgrey'}}>December</Text>
                     </TouchableOpacity>
                     <Text>     </Text>
             </ScrollView>
-            </View>
-
+            </View>{this.state.hasInviteData == true ? (
+                            
+                            <Text style = {{marginLeft: '2%', marginTop: '2%'}}>Pending({this.state.invitesData.length})</Text> ) : <View></View>
+                            }
+         
                         {this.state.hasInviteData == true ? (
+                            
                         <InvitationCard inviteObj = {this.state.invitesData[0]} inviteKey = {this.state.inviteKey} navigation ={this.props.navigation} >
                         </InvitationCard> ) : <View></View>
                         }
@@ -208,9 +266,7 @@ export default class FlatlistDemo extends React.Component {
                     />
                 </View>
             )
-        } else {
-            return (<View style={{ flex: 1 }} />)
-        }
+       
     }
 }
 

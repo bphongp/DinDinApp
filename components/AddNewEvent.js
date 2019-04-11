@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Dimensions, Image, TouchableOpacity, TextInput, DatePickerIOS, Picker } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Image, TouchableOpacity, TextInput, DatePickerIOS, Picker, Platform, Button,ActivityIndicator } from 'react-native';
 import { Constants, MapView, Location, Permissions} from 'expo';
 
 import firebase from 'firebase';
@@ -12,25 +12,34 @@ const firebaseConfig = {
   storageBucket: "dindin-46b55.appspot.com",
   messagingSenderId: "36010701085", 
 };
-const MAX_HOURS = 12;
-const MAX_MINUTES = 60;
+
+const EXAMPLES = [
+  'Rogers Arena, Vancouver',
+  { latitude: 49.28, longitude: -123.12 },
+'Palo Alto Caltrain Station (this one will error)',
+{ latitude: 0, longitude: 0 },
+];
+
 export default class AddNewEvent extends Component {
     constructor(props) {
       super(props)
       this.state = {
-          mapRegion: null,
           hasLocationPermissions: false,
+          mapRegion: { latitude: 37.78825, longitude: -78.4766781, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
           locationResult: null,
           location: {coords: { latitude: 37.78825, longitude: -78.4766781}},
           text:'',
           hr:'',
           min:'',
-          ampm:''
+          ampm:'', 
+          result: '',
+          selectedExample: '',
       }
     };
     setDate(newDate) {
       this.setState({chosenDate: newDate})
     }
+
     static navigationOptions = {
         title:"DinDin",
         headerTitleStyle:{
@@ -51,12 +60,18 @@ export default class AddNewEvent extends Component {
             </View>
         )
     };
+    /*addEvent(object) {
+      //console.log("Accept entered")
+      //console.log(this.state.inviteKey)
+      firebase.database().ref('events/').push({
+          time: this.state.hr +":"+ this.state.min+" "+ this.state.ampm,
+      })
+  }*/
     componentDidMount() {
-      this.getLocationAsync();
+      this._getLocationAsync();
     }
   
     _handleMapRegionChange = mapRegion => {
-      console.log(mapRegion);
       this.setState({ mapRegion });
     };
     //added for firebase things
@@ -66,57 +81,80 @@ export default class AddNewEvent extends Component {
       }
       
     }
-    async getLocationAsync (){
-     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-     if (status !== 'granted') {
-       this.setState({
-         locationResult: 'Permission to access location was denied',
-         location,
-       });
-     } else {
-       this.setState({ hasLocationPermissions: true });
-     }
-  
-     let location = await Location.getCurrentPositionAsync({});
-     this.setState({ locationResult: JSON.stringify(location), location });
-     
-     // Center the map on the location we just fetched.
-      this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
-    }
-/*            <MapView
-                style={{ alignSelf: 'stretch', height: 400 }}              
-                initialRegion={{
-                latitude: 38.0293059,
-                longitude: -78.4766781,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            />  
-            */
-/*            
-{
-            this.state.locationResult === null ?
-            <Text>Finding your current location...</Text> :
-            this.state.hasLocationPermissions === false ?
-                <Text>Location permissions are not granted.</Text> :
-                this.state.mapRegion === null ?
-                <Text>Map region doesn't exist.</Text> :
-                <MapView
-                style={{ alignSelf: 'stretch', height: 400 }}
-                region={this.state.mapRegion}
-                onRegionChange={this._handleMapRegionChange}
-                />
-            }
-            */
+    _getLocationAsync = async () => {
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
+        this.setState({
+          locationResult: 'Permission to access location was denied',
+          location,
+        });
+      }
+   
+      let location = await Location.getCurrentPositionAsync({});
+      this.setState({ locationResult: JSON.stringify(location), location, });
+    };
 
+    _attemptGeocodeAsync = async () => {
+      this.setState({ inProgress: true, error: null });
+      try {
+        let result = await location.geocodeAsync(this.state.text);
+        this.setState({ result });
+      } catch (e) {
+        this.setState({ error: e.message });
+      } finally {
+        this.setState({ inProgress: false });
+      }
+    };
+
+    _attemptReverseGeocodeAsync = async () => {
+      this.setState({ inProgress: true });
+      try {
+        let result = await Location.reverseGeocodeAsync(
+          this.state.selectedExample
+        );
+        this.setState({ result });
+      } catch (e) {
+        this.setState({ error: e });
+      } finally {
+        this.setState({ inProgress: false });
+      }
+    };
+
+    /*_maybeRenderResult = () => {
+      let { text } = this.state;
+      let text = typeof selectedExample === 'string'
+        ? selectedExample
+        : JSON.stringify(selectedExample);
+  
+      if (this.state.inProgress) {
+        return <ActivityIndicator style={{ marginTop: 10 }} />;
+      } else if (this.state.result) {
+        return (
+          <Text style={styles.resultText}>
+            {text} resolves to {JSON.stringify(this.state.result)}
+          </Text>
+        );
+      } else if (this.state.error) {
+        return (
+          <Text style={styles.errorResultText}>
+            {text} cannot resolve: {JSON.stringify(this.state.error)}
+          </Text>
+        );
+      }
+    };*/
+
+  
   render() {
     console.log(this.state.ampm);
     console.log(this.state.min);
     console.log(this.state.hr);
+    console.log(this.state.text);
+    let { selectedExample } = this.state;
     return (
       <View style={{flex:1}}>
+        <View style ={{flex:1, alignItems:'center'}}>
         <Text style = {styles.subText}>What time is dinner?</Text>
-        <View style ={{flexDirection:"row", height:"15%", alignItems:'center'}}>
+        <View style ={{flexDirection:"row", height:"15%", alignItems:'center'}}>        
           <Picker
             selectedValue={this.state.hr}
             onValueChange={hr => this.setState({ hr})}
@@ -135,7 +173,6 @@ export default class AddNewEvent extends Component {
             <Picker.Item label="11" value="11" />
             <Picker.Item label="12" value="12" />
           </Picker>
-          <Text>:</Text>
           <Picker
             selectedValue={this.state.min}
             onValueChange={min => this.setState({min})}
@@ -210,34 +247,32 @@ export default class AddNewEvent extends Component {
             <Picker.Item label="PM" value="PM" />
           </Picker>
           </View>
-            <View style ={styles.card}>
+
+          <View style ={styles.card}>
                 <TextInput style ={{alignSelf:'center'}}
                     placeholder="Choose a location"
                     onChangeText={(text) => this.setState({text})}
-                    />
-                <Text style={{padding: 10, fontSize: 30}}>
-                    {this.state.text}
-                </Text>
+                />
+
             </View>
+            </View>
+            <View style={{flex:1}}>
             <MapView
-                style={{ alignSelf: 'stretch', height: 300 }}              
-                initialRegion={{
-                latitude: 38.0293059,
-                longitude: -78.4766781,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            />  
+                style={{ alignSelf: 'stretch', flex:1 }}
+                region={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
+                onRegionChange={this._handleMapRegionChange}
+            >
             <MapView.Marker
-                    coordinate={this.state.location.coords}
-                    title="My Marker"
-                    description="Some description"
+                coordinate={this.state.location.coords}
+                title="My Location"
             />
-            <View style = {{flex: .25}}>
+            </MapView>
+            <View style = {{flex:0.2}}>
 
               <TouchableOpacity style = {{flex: 1}} onPress={() => {this.props.navigation.navigate('InvitePeople')}}>
                   <Image style= {{width: '100%', height: '100%'}} source={require('../assets/invitebtn.png')} />
               </TouchableOpacity>
+            </View>
             </View>
       </View>
     );
@@ -248,9 +283,11 @@ const styles = StyleSheet.create({
   card: {
     overflow: 'hidden',
     backgroundColor: 'white',
-    margin: 15,
-    height: '14%',
-
+    marginTop: '20%',
+    flex:.75,
+    width:'90%',
+    alignItems:'center',
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'lightgrey',
   },
@@ -261,6 +298,7 @@ const styles = StyleSheet.create({
     marginTop:'75%'
   },
   subText: {
+      flex:.25,
       fontSize: 15,
       color: 'grey',
       alignItems: 'center',
@@ -269,8 +307,44 @@ const styles = StyleSheet.create({
       paddingVertical: '5%'
   },
   picker:{
-      width:"30%",
-      height:"20%",
+      flex:1,
       alignContent:'center'
-    }
+    },
+    headerText: {
+      fontSize: 18,
+      fontWeight: '600',
+      marginBottom: 5,
+    },
+    headerContainer: {
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+      marginHorizontal: 20,
+      marginBottom: 0,
+      marginTop: 20,
+    },
+    examplesContainer: {
+      paddingTop: 15,
+      paddingBottom: 5,
+      paddingHorizontal: 20,
+    },
+    resultText: {
+      padding: 20,
+    },
+    actionContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 10,
+    },
+    errorResultText: {
+      padding: 20,
+      color: 'red',
+    },
+    button: {
+      ...Platform.select({
+        android: {
+          marginBottom: 10,
+        },
+      }),
+    },
 });

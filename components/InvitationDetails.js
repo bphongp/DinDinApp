@@ -15,7 +15,6 @@ const firebaseConfig = {
 export default class InvitationCard extends React.Component {
     constructor(props) {
         super(props)
-        
         this.state = {
             inviteObj: this.props.navigation.state.params.inviteObj,
             inviteKey: this.props.navigation.state.params.inviteKey,
@@ -67,22 +66,6 @@ export default class InvitationCard extends React.Component {
         let location = await Location.getCurrentPositionAsync({});
         this.setState({ locationResult: JSON.stringify(location), location, });
       };
-/*
-                    {
-                        this.state.locationResult === null ?
-                        <Text>Finding your current location...</Text> :
-                        this.state.hasLocationPermissions === false ?
-                            <Text>Location permissions are not granted.</Text> :
-                            this.state.mapRegion === null ?
-                            <Text>Map region doesn't exist.</Text> :
-                            <MapView
-                                style={{ alignSelf: 'stretch', height: 400 }}
-                                region={this.state.mapRegion}
-                                onRegionChange={this._handleMapRegionChange}
-                            />
-                    }
-                    
-*/
     render() {
         //console.log("invite card render entered")
         //console.log("invite key at card " + this.state.inviteKey)
@@ -94,7 +77,7 @@ export default class InvitationCard extends React.Component {
                         <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
                     
                         <View style = {{marginTop: 10, alignItems: 'center'}}>
-                        <Text style = {{marginTop: 5, fontSize: 20,}}>Restuarant Name, Address</Text>    
+                        <Text style = {{marginTop: 5, fontSize: 20,}}>Restaurant Name, Address</Text>    
                         <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
                         <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
                         </View>   
@@ -111,8 +94,9 @@ export default class InvitationCard extends React.Component {
                     
                     </View>
                 </View>
+                <View style={{flex:1}}>
                     <MapView
-                        style={{ alignSelf: 'stretch', height: 400 }}
+                        style={{ alignSelf: 'stretch', flex:1 }}
                         region={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
                         onRegionChange={this._handleMapRegionChange}
                     >
@@ -121,8 +105,8 @@ export default class InvitationCard extends React.Component {
                         title="My Marker"
                         description="Some description"
                     />
-            </MapView>
-
+                    </MapView>
+                    </View>
             </View>
         )
     }    

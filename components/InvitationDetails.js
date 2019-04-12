@@ -11,13 +11,16 @@ const firebaseConfig = {
     storageBucket: "dindin-46b55.appspot.com",
     messagingSenderId: "36010701085"
 };
+
 export default class InvitationCard extends React.Component {
     constructor(props) {
         super(props)
-        
         this.state = {
             inviteObj: this.props.navigation.state.params.inviteObj,
             inviteKey: this.props.navigation.state.params.inviteKey,
+            mapRegion: { latitude: 37.78825, longitude: -78.4766781, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
+            locationResult: null,
+            location: {coords: { latitude: 37.78825, longitude: -78.4766781}},
         }
         console.log("Invite key in invitationdetails " + this.state.inviteKey)
     }
@@ -43,46 +46,26 @@ export default class InvitationCard extends React.Component {
         this.props.navigation.goBack()
     }
     componentDidMount() {
-        this.getLocationAsync();
-    }
+        this._getLocationAsync();
+      }
     
-    _handleMapRegionChange = mapRegion => {
-        console.log(mapRegion);
+    
+      _handleMapRegionChange = mapRegion => {
         this.setState({ mapRegion });
     };
     
-    async getLocationAsync (){
+    _getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
-            this.setState({
-                locationResult: 'Permission to access location was denied',
-            });
-        } else {
-            this.setState({ hasLocationPermissions: true });
+          this.setState({
+            locationResult: 'Permission to access location was denied',
+            location,
+          });
         }
-    
+     
         let location = await Location.getCurrentPositionAsync({});
-        this.setState({ locationResult: JSON.stringify(location) });
-       
-        // Center the map on the location we just fetched.
-        this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
-    }
-/*
-                    {
-                        this.state.locationResult === null ?
-                        <Text>Finding your current location...</Text> :
-                        this.state.hasLocationPermissions === false ?
-                            <Text>Location permissions are not granted.</Text> :
-                            this.state.mapRegion === null ?
-                            <Text>Map region doesn't exist.</Text> :
-                            <MapView
-                                style={{ alignSelf: 'stretch', height: 400 }}
-                                region={this.state.mapRegion}
-                                onRegionChange={this._handleMapRegionChange}
-                            />
-                    }
-                    
-*/
+        this.setState({ locationResult: JSON.stringify(location), location, });
+      };
     render() {
         //console.log("invite card render entered")
         //console.log("invite key at card " + this.state.inviteKey)
@@ -94,7 +77,7 @@ export default class InvitationCard extends React.Component {
                         <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
                     
                         <View style = {{marginTop: 10, alignItems: 'center'}}>
-                        <Text style = {{marginTop: 5, fontSize: 20,}}>Restuarant Name, Address</Text>    
+                        <Text style = {{marginTop: 5, fontSize: 20,}}>Restaurant Name, Address</Text>    
                         <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
                         <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
                         </View>   
@@ -111,19 +94,19 @@ export default class InvitationCard extends React.Component {
                     
                     </View>
                 </View>
-                    {
-                        this.state.locationResult === null ?
-                        <Text>Finding your current location...</Text> :
-                        this.state.hasLocationPermissions === false ?
-                            <Text>Location permissions are not granted.</Text> :
-                            this.state.mapRegion === null ?
-                            <Text>Map region doesn't exist.</Text> :
-                            <MapView
-                                style={{ alignSelf: 'stretch', height: 400 }}
-                                region={this.state.mapRegion}
-                                onRegionChange={this._handleMapRegionChange}
-                            />
-                    }
+                <View style={{flex:1}}>
+                    <MapView
+                        style={{ alignSelf: 'stretch', flex:1 }}
+                        region={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
+                        onRegionChange={this._handleMapRegionChange}
+                    >
+                    <MapView.Marker
+                        coordinate={this.state.location.coords}
+                        title="My Marker"
+                        description="Some description"
+                    />
+                    </MapView>
+                    </View>
             </View>
         )
     }    

@@ -14,7 +14,7 @@ export default class GeocodingScreen extends React.Component {
     selectedExample: '',
     result: {coords: { latitude: 37.78825, longitude: -78.4766781}},
     inProgress: false,
-    location:null,
+    location: null,
 
     
     }
@@ -42,6 +42,18 @@ export default class GeocodingScreen extends React.Component {
                 />
         <View style={styles.separator} />
         {this._maybeRenderResult()}
+        <View style={{flex:1}}>
+            <MapView
+                style={{ alignSelf: 'stretch', flex:1 }}
+                region={{ latitude: this.state.result.coords.latitude, longitude: this.state.result.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
+                onRegionChange={this._handleMapRegionChange}
+            >
+            <MapView.Marker
+                coordinate={this.state.result.coords}
+                title="My Location"
+            />
+            </MapView>
+            </View>
       </View>
     );
   }
@@ -63,7 +75,8 @@ export default class GeocodingScreen extends React.Component {
     this.setState({ inProgress: true, error: null });
     try {
       let result = await Location.geocodeAsync(this.state.selectedExample);
-      this.setState({ location: JSON.stringify(result[0]), result });
+      this.setState({ location: JSON.stringify(result[0]), result: {coords:result[0]} });
+      this.setState({mapRegion: { latitude: this.state.result.coords.latitude, longitude: this.state.result.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
       //this.setState({result})
     } catch (e) {
       this.setState({ error: e.message });
@@ -85,7 +98,8 @@ export default class GeocodingScreen extends React.Component {
 
       return (
         <Text>
-          {text} resolves to {this.state.location}
+          {text} resolves to {this.state.location} and latitude: {this.state.location.latitude}//
+          {JSON.stringify(this.state.result.coords.latitude)}
         </Text>
 
       );

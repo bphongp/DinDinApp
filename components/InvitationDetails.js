@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Dimensions, Image, Button, TouchableOpacity} fr
 import firebase from 'firebase';
 import { Constants, MapView, Location, Permissions } from 'expo';
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyD50J9Y7FH9l2tfwZ_qOJCCjnjpRBaFrR4",
     authDomain: "dindin-46b55.firebaseapp.com",
@@ -21,6 +22,7 @@ export default class InvitationCard extends React.Component {
             mapRegion: { latitude: 37.78825, longitude: -78.4766781, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
             locationResult: null,
             location: {coords: { latitude: 37.78825, longitude: -78.4766781}},
+            location2: {coords: { latitude: 37.78825, longitude: -78.4766781}}
         }
         console.log("Invite key in invitationdetails " + this.state.inviteKey)
     }
@@ -97,11 +99,16 @@ export default class InvitationCard extends React.Component {
                 <View style={{flex:1}}>
                     <MapView
                         style={{ alignSelf: 'stretch', flex:1 }}
-                        region={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
+                        region={{ latitude: this.state.location2.coords.latitude, longitude: this.state.location2.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
                         onRegionChange={this._handleMapRegionChange}
                     >
                     <MapView.Marker
                         coordinate={this.state.location.coords}
+                        title="My Marker"
+                        description="Some description"
+                    />
+                    <MapView.Marker
+                        coordinate={this.state.location2.coords}
                         title="My Marker"
                         description="Some description"
                     />

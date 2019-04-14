@@ -4,6 +4,7 @@ import InvitationCard from './InvitationCard';
 import firebase from 'firebase';
 
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyD50J9Y7FH9l2tfwZ_qOJCCjnjpRBaFrR4",
     authDomain: "dindin-46b55.firebaseapp.com",
@@ -44,52 +45,20 @@ export default class FlatlistDemo extends React.Component {
             this.setState({ eventsData: data})
         }
     }
-    getMonth(number){
-        if(number == 1){
-            return "Jan"
-        }
-        else if(number == 2){
-            return "Feb"
-        }
-        else if(number == 3){
-            return "Mar"
-        }
-        else if(number == 4){
-            return "Apr"
-        }
-        else if(number == 5){
-            return "May"
-        }
-        else if(number == 6){
-            return "Jun"
-        }
-        else if(number == 7){
-            return "July"
-        }
-        else if(number == 8){
-            return "Aug"
-        }
-        else if(number == 9){
-            return "Sep"
-        }
-        else if(number == 10){
-            return "Oct"
-        }
-        else if(number == 11){
-            return "Nov"
-        }
-        else if(number == 12){
-            return "Dec"
-        }
-        else{
-            return ""
-        }
+    compare(a,b) {
+        if (a.date.month < b.date.month)
+          return -1;
+        if (a.date.month > b.date.month)
+          return 1;
+        return a.date.day - b.date.day
     }
+   
     componentWillMount() {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         this.readUserData()
+        
     }
 
   
@@ -99,7 +68,7 @@ export default class FlatlistDemo extends React.Component {
         this.database = firebase.database();
         firebase.database().ref('events/').on("value", snapshot => {
             this.setState({ eventsData: Object.values(snapshot.val()), hasData: true, eventsDataAll: Object.values(snapshot.val())})
-            
+           
         })
 
         firebase.database().ref('invites/').on("value", snapshot => {
@@ -107,6 +76,7 @@ export default class FlatlistDemo extends React.Component {
             //console.log(snapshot.val())
             //this.forceUpdate();
         })
+        
     }
     
     keyExtractor(item) {
@@ -182,6 +152,8 @@ export default class FlatlistDemo extends React.Component {
     //this.addEvent(this.props.date)
     months = ["Janurary", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     render() {
+        {this.state.eventsData.sort(this.compare)}
+        {console.log(this.state.eventsData)}
             return (
                 <View style = {{ flex: 1,}}>
                 <View style = {styles.container}>
@@ -259,6 +231,7 @@ export default class FlatlistDemo extends React.Component {
 
                     <FlatList
                         style={{}}
+                     
                         data={this.state.eventsData}
                         renderItem={this.renderRow}
                         keyExtractor={this.keyExtractor}

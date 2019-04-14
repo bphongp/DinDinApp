@@ -77,8 +77,8 @@ export default class InvitationCard extends React.Component {
                         <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
                     
                         <View style = {{marginTop: 10, alignItems: 'center'}}>
-                        <Text style = {{marginTop: 5, fontSize: 20,}}>Restaurant Name, Address</Text>    
-                        <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
+                        <Text style = {{marginTop: 5, fontSize: 20,}}>{this.state.inviteObj.location} </Text>    
+                        <Text style = {styles.text}>{this.state.inviteObj.date.month + "/" + this.state.inviteObj.date.day + " - " + this.state.inviteObj.date.time}</Text>
                         <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
                         </View>   
                     

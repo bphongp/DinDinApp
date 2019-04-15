@@ -11,6 +11,8 @@ const firebaseConfig = {
     storageBucket: "dindin-46b55.appspot.com",
     messagingSenderId: "36010701085"
 };
+const pinColor = '#000000';
+
 
 export default class InvitationCard extends React.Component {
     constructor(props) {
@@ -21,6 +23,9 @@ export default class InvitationCard extends React.Component {
             mapRegion: { latitude: 37.78825, longitude: -78.4766781, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
             locationResult: null,
             location: {coords: { latitude: 37.78825, longitude: -78.4766781}},
+            locationEvent: null,
+            result: {coords: { latitude: 37.78825, longitude: -78.4766781}},
+            inProgress: false,
         }
         console.log("Invite key in invitationdetails " + this.state.inviteKey)
     }
@@ -36,7 +41,8 @@ export default class InvitationCard extends React.Component {
         firebase.database().ref('events/').push({
             name: object.name,
             date: object.date,
-            photo: object.photo
+            photo: object.photo,
+            location: object.location,
         })
         firebase.database().ref('invites/').child(this.state.inviteKey).remove();
         this.props.navigation.goBack()
@@ -47,9 +53,23 @@ export default class InvitationCard extends React.Component {
     }
     componentDidMount() {
         this._getLocationAsync();
+        this._attemptGeocodeAsync();
       }
     
     
+    _attemptGeocodeAsync = async () => {
+        this.setState({ inProgress: true, error: null });
+        try {
+        let result = await Location.geocodeAsync(this.state.inviteObj.location);
+        this.setState({ locationEvent: JSON.stringify(result[0]), result: {coords:result[0]} });
+        this.setState({mapRegion: { latitude: this.state.result.coords.latitude, longitude: this.state.result.coords.longitude, latitudeDelta: 1, longitudeDelta: 1}});
+        //this.setState({result})
+        } catch (e) {
+        this.setState({ error: e.message });
+        } finally {
+        this.setState({ inProgress: false });
+        }
+    };
       _handleMapRegionChange = mapRegion => {
         this.setState({ mapRegion });
     };
@@ -77,7 +97,7 @@ export default class InvitationCard extends React.Component {
                         <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
                     
                         <View style = {{marginTop: 10, alignItems: 'center'}}>
-                        <Text style = {{marginTop: 5, fontSize: 20,}}>Restaurant Name, Address</Text>    
+                        <Text style = {{marginTop: 5, fontSize: 20,}}>{this.state.inviteObj.location}</Text>    
                         <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
                         <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
                         </View>   
@@ -97,13 +117,19 @@ export default class InvitationCard extends React.Component {
                 <View style={{flex:1}}>
                     <MapView
                         style={{ alignSelf: 'stretch', flex:1 }}
-                        region={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}
+                        region={{ latitude: this.state.result.coords.latitude, longitude: this.state.result.coords.longitude, latitudeDelta: 5, longitudeDelta: 5}}
                         onRegionChange={this._handleMapRegionChange}
                     >
-                    <MapView.Marker
+                    <MapView.Marker style = {{color: 'green'}}
                         coordinate={this.state.location.coords}
-                        title="My Marker"
+                        title="My Location"
                         description="Some description"
+                    />
+                    <MapView.Marker
+                        coordinate={this.state.result.coords}
+                        title="Event Location"
+                        description= {this.state.inviteObj.location}
+                        
                     />
                     </MapView>
                     </View>

@@ -50,7 +50,7 @@ export default class InvitationCard extends React.Component {
                   <TouchableOpacity style = {{flex: 1}} onPress={() => this.props.navigation.navigate('InvitationDetails',{inviteObj:this.props.inviteObj, inviteKey:this.props.inviteKey})}>
                     <View style = {{marginTop: 10}}>
                     <Text style = {styles.text}>{this.props.inviteObj.name}</Text>    
-                    <Text style = {styles.text}>{this.props.inviteObj.date.month + " " + this.props.inviteObj.date.day + " " + this.props.inviteObj.date.time}</Text> 
+                    <Text style = {styles.text}>{this.props.inviteObj.date.month + "/" + this.props.inviteObj.date.day + " at " + this.props.inviteObj.date.time}</Text> 
                     </View>   
                     </TouchableOpacity>
                 </View>

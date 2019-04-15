@@ -1,11 +1,22 @@
 {
   "events" : {
+    "0001" : {
+      "date" : {
+        "day" : 18,
+        "month" : 4,
+        "time" : "1:00 AM"
+      },
+      "location" : "",
+      "name" : "Dinner hosted by You",
+      "photo" : "https://webaim.org/blog/media/pig.jpg"
+    },
     "-LbWdPYjiD2HS4xa89he" : {
       "date" : {
         "day" : 20,
         "month" : 2,
         "time" : "2:00 pm"
       },
+      "location" : "University of Virginia",
       "name" : "D.O",
       "photo" : "https://kprofiles.com/wp-content/uploads/2017/01/D.O1.jpg"
     }
@@ -15,8 +26,9 @@
       "date" : {
         "day" : 23,
         "month" : 11,
-        "time" : "10:00"
+        "time" : "10:00 am"
       },
+      "location" : "University of Virginia",
       "name" : "Umji",
       "photo" : "https://kprofiles.com/wp-content/uploads/2018/07/g-friend-umji-e1515850838199.jpg"
     },
@@ -26,6 +38,7 @@
         "month" : 6,
         "time" : "9:00 pm"
       },
+      "location" : "1 hacker way",
       "name" : "Chen",
       "photo" : "https://img.kpopmap.com/2019/01/Chen-EXO.jpg"
     }

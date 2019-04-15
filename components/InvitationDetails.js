@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Dimensions, Image, Button, TouchableOpacity} fr
 import firebase from 'firebase';
 import { Constants, MapView, Location, Permissions } from 'expo';
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyD50J9Y7FH9l2tfwZ_qOJCCjnjpRBaFrR4",
     authDomain: "dindin-46b55.firebaseapp.com",
@@ -26,6 +27,7 @@ export default class InvitationCard extends React.Component {
             locationEvent: null,
             result: {coords: { latitude: 37.78825, longitude: -78.4766781}},
             inProgress: false,
+
         }
         console.log("Invite key in invitationdetails " + this.state.inviteKey)
     }
@@ -97,8 +99,8 @@ export default class InvitationCard extends React.Component {
                         <Image style = {styles.image} source={{ uri: this.state.inviteObj.photo }} />
                     
                         <View style = {{marginTop: 10, alignItems: 'center'}}>
-                        <Text style = {{marginTop: 5, fontSize: 20,}}>{this.state.inviteObj.location}</Text>    
-                        <Text style = {styles.text}>{this.state.inviteObj.date.day + " " + this.state.inviteObj.date.month + " - " + this.state.inviteObj.date.time}</Text>
+                        <Text style = {{marginTop: 5, fontSize: 20,}}>{this.state.inviteObj.location} </Text>    
+                        <Text style = {styles.text}>{this.state.inviteObj.date.month + "/" + this.state.inviteObj.date.day + " - " + this.state.inviteObj.date.time}</Text>
                         <Text style = {{marginTop: 10,color: 'grey', fontWeight: 'bold'}}>{"Hosted By " + this.state.inviteObj.name}</Text>     
                         </View>   
                     
@@ -117,7 +119,8 @@ export default class InvitationCard extends React.Component {
                 <View style={{flex:1}}>
                     <MapView
                         style={{ alignSelf: 'stretch', flex:1 }}
-                        region={{ latitude: this.state.result.coords.latitude, longitude: this.state.result.coords.longitude, latitudeDelta: 5, longitudeDelta: 5}}
+                        region={{ latitude: this.state.result.coords.latitude, longitude: this.state.result.coords.longitude, latitudeDelta:0.0922, longitudeDelta: 0.0421}}
+
                         onRegionChange={this._handleMapRegionChange}
                     >
                     <MapView.Marker style = {{color: 'green'}}

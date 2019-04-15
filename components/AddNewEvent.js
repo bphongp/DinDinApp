@@ -17,14 +17,14 @@ export default class AddNewEvent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    mapRegion: { latitude: 37.78825, longitude: -78.4766781, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
-    selectedExample: '',
-    result: {coords: { latitude: 37.78825, longitude: -78.4766781}},
-    inProgress: false,
-    location: null,
-    hr:'',
-    min:'',
-    ampm:'', 
+      mapRegion: { latitude: 37.78825, longitude: -78.4766781, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
+      selectedExample: '',
+      result: {coords: { latitude: 37.78825, longitude: -78.4766781}},
+      inProgress: false,
+      location: null,
+      hr:1,
+      min:'00',
+      ampm:'AM', 
     }
   };
   static navigationOptions = {
@@ -54,11 +54,8 @@ export default class AddNewEvent extends Component {
     firebase.database().ref('events/0001').set(
       {
         date:{
-          day:18,
           month:4,
-          time: this.state.hr +":"+this.state.min+" "+this.state.ampm
         },
-        location: this.state.selectedExample,
         name: "Dinner hosted by You",
         photo:"https://webaim.org/blog/media/pig.jpg"
       }
@@ -66,11 +63,25 @@ export default class AddNewEvent extends Component {
   }
   componentDidMount() {
     Permissions.askAsync(Permissions.LOCATION);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    firebase.database().ref('events/0001').set(
+      {
+        date:{
+          month:4,
+      },
+        name: "Dinner hosted by You",
+        photo:"https://webaim.org/blog/media/pig.jpg"
+      }
+    )
   }
   _handleMapRegionChange = mapRegion => {
     this.setState({ mapRegion });
   };
   render() {
+    console.log(this.state.min)
+    console.log(this.state.hr)
     return (
       <View style={styles.container}>
           <View style ={{flex:1, alignItems:'center'}}>
@@ -79,7 +90,7 @@ export default class AddNewEvent extends Component {
               <View style ={{flexDirection:"row", height:"15%", alignItems:'center'}}>        
                   <Picker
                     selectedValue={this.state.hr}
-                    onValueChange={hr => this.setState({ hr})}
+                    onValueChange={hr => this._save_hr(hr)}
                     style={styles.picker}
                     mode="dropdown">
                     <Picker.Item label="1" value="1" />
@@ -97,18 +108,20 @@ export default class AddNewEvent extends Component {
                   </Picker>
                   <Picker
                     selectedValue={this.state.min}
-                    onValueChange={min => this.setState({min})}
+                    onValueChange={min=>this._save_min(min)}
                     style={styles.picker}
                     mode="dropdown">
-                    <Picker.Item label="1" value="1" />
-                    <Picker.Item label="2" value="2" />
-                    <Picker.Item label="3" value="3" />
-                    <Picker.Item label="4" value="4" />
-                    <Picker.Item label="5" value="5" />
-                    <Picker.Item label="6" value="6" />
-                    <Picker.Item label="7" value="7" />
-                    <Picker.Item label="8" value="8" />
-                    <Picker.Item label="9" value="9" />
+                    <Picker.Item label="00" value="00" />
+
+                    <Picker.Item label="01" value="01" />
+                    <Picker.Item label="02" value="02" />
+                    <Picker.Item label="03" value="03" />
+                    <Picker.Item label="04" value="04" />
+                    <Picker.Item label="05" value="05" />
+                    <Picker.Item label="06" value="06" />
+                    <Picker.Item label="07" value="07" />
+                    <Picker.Item label="08" value="08" />
+                    <Picker.Item label="09" value="09" />
                     <Picker.Item label="10" value="10" />
                     <Picker.Item label="11" value="11" />
                     <Picker.Item label="12" value="12" />
@@ -126,7 +139,7 @@ export default class AddNewEvent extends Component {
                     <Picker.Item label="24" value="24" />
                     <Picker.Item label="25" value="25" />
                     <Picker.Item label="26" value="26" />
-                    <Picker.Item label="17" value="27" />
+                    <Picker.Item label="27" value="27" />
                     <Picker.Item label="28" value="28" />
                     <Picker.Item label="29" value="29" />
                     <Picker.Item label="30" value="30" />
@@ -162,7 +175,7 @@ export default class AddNewEvent extends Component {
                   </Picker>
                   <Picker
                     selectedValue={this.state.ampm}
-                    onValueChange={ampm => this.setState({ ampm})}
+                    onValueChange={ampm => this._save_ampm(ampm)}
                     style={styles.picker}
                     mode="dropdown">
                     <Picker.Item label="AM" value="AM" />
@@ -201,6 +214,54 @@ export default class AddNewEvent extends Component {
     );
   }
 
+  _save_min(min){
+    this.setState({ min: min})
+    console.log(this.state.min)
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    firebase.database().ref('events/0001').update(
+        {
+          date:{
+            day:18,
+            month:4,
+            time: this.state.hr+":"+this.state.min+ " "+ this.state.ampm          
+          }
+        }
+    );
+  };
+  _save_hr(hr){
+    this.setState({ hr: hr})
+    console.log(this.state.hr)
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    firebase.database().ref('events/0001').update(
+        {
+          date:{
+            day:18,
+            month:4,
+            time: this.state.hr+":"+this.state.min+ " "+ this.state.ampm          
+          }
+        }
+    );
+  };
+  _save_ampm(ampm){
+    this.setState({ ampm: ampm})
+    console.log(this.state.ampm)
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    firebase.database().ref('events/0001').update(
+        {
+          date:{
+            day:18,
+            month:4,
+            time: this.state.hr+":"+this.state.min+ " "+ this.state.ampm          
+          }
+        }
+    );
+  };
   _attemptReverseGeocodeAsync = async () => {
     this.setState({ inProgress: true });
     try {
@@ -215,6 +276,20 @@ export default class AddNewEvent extends Component {
 
   _attemptGeocodeAsync = async () => {
     this.setState({ inProgress: true, error: null });
+    console.log(this.state.selectedExample)
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    firebase.database().ref('events/0001').update(
+      {
+        date:{
+          day:18,
+          month:4,
+          time: this.state.hr+":"+this.state.min+ " "+ this.state.ampm          
+        },
+        location: this.state.selectedExample,
+      }
+    )
     try {
       let result = await Location.geocodeAsync(this.state.selectedExample);
       this.setState({ location: JSON.stringify(result[0]), result: {coords:result[0]} });

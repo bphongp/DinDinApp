@@ -7,6 +7,7 @@ import InvitationCard from './components/InvitationCard';
 import AddNewEvent from './components/AddNewEvent';
 import InvitationDetails from './components/InvitationDetails';
 import InvitePeople from './components/InvitePeople';
+
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 const rootStack = createStackNavigator(

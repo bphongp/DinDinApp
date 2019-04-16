@@ -1,6 +1,7 @@
-import * as React from 'react'
-import { StyleSheet, Text, View, Image, FlatList, Button, TouchableOpacity, ScrollView} from 'react-native'
-import InvitationCard from './InvitationCard';
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Constants } from 'expo';
+import { ListItem, CheckBox } from 'react-native-elements';
 import firebase from 'firebase';
 
 const firebaseConfig = {
@@ -9,21 +10,24 @@ const firebaseConfig = {
     databaseURL: "https://dindin-46b55.firebaseio.com",
     projectId: "dindin-46b55",
     storageBucket: "dindin-46b55.appspot.com",
-    messagingSenderId: "36010701085"
+    messagingSenderId: "36010701085", 
 };
 
-
-export default class InvitePeople extends React.Component {
-
+export default class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
             eventsDataAll: [],
             eventsData: [],
+            contactsData: [],
             hasData: false,
+            invitesData: [],
+            inviteKey:null,
+            hasInviteData: false,
+            checked:false,
         }
     }
-   
+       
     componentWillMount() {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -31,62 +35,18 @@ export default class InvitePeople extends React.Component {
         this.readUserData()
         
     }
-
-  
     readUserData() {
-       //console.log("readUserData Fired")
-
-        this.database = firebase.database();
-        firebase.database().ref('events/0001').on("value", snapshot => {
-            this.setState({ eventsData: Object.values(snapshot.val()), hasData: true, eventsDataAll: Object.values(snapshot.val())})
-           
-        })
-        console.log("events:"+this.state.eventsDataAll)
-
-        
-    }
-
-    renderRow({ item }) {
-        return (
+        //console.log("readUserData Fired")
+        let currentContext = this
+         this.database = firebase.database();
+         firebase.database().ref('Contacts/').on("value", snapshot => {
+             this.setState({ contactsData: Object.values(snapshot.val()), hasData: true, eventsDataAll: Object.values(snapshot.val())})
             
-            <View style={styles.card}>
-                <View style={{flex:1,flexDirection:'row'}}>
-                    <Image style={styles.image} source={{ uri: item.photo }} />
-                    <View style={{ marginTop: '3%', flex: 2 }}>
-                        <Text style={styles.text}>{item.name}</Text>
-                        <Text style={styles.text}>{ item.date.month + "/" + item.date.day + " " + item.date.time}</Text>
-                    </View>
-                    <View style={{ flex: .75, flexDirection: 'row'}}>
+         })
 
-                    </View>
-                </View>
-            </View>
-
-        )
-    }
-    static navigationOptions = {
-        title: "DinDin",
-        headerTitleStyle: {
-            fontSize: 20,
-            fontWeight: undefined,
-            alignSelf: 'center',
-            flexGrow: 1,
-            textAlign: 'center',
-        },
-        headerStyle: {
-            paddingVertical: 15,
-        },
-        headerRight: (
-            <View style={{
-                margin: 5,
-                paddingHorizontal: 10,
-            }}>
-                <Image source={require('../assets/search.png')} />
-            </View>
-        )
-
-    };
-    renderSeparator = () => {
+         
+     }
+     renderSeparator = () => {
         return (
             <View
                 style={{
@@ -98,13 +58,63 @@ export default class InvitePeople extends React.Component {
             />
         );
     };
-
-    render() {
-            return (
-                <View style = {{ flex: 1,}}>
+    renderRow({ item }) {
+        return (
+            
+            <View style={styles.card}>
+                <View style={{flex:1,flexDirection:'row'}}>
+                    <Image style={styles.image} source={{ uri: item.photo }} />
+                    <View style={{ marginTop: '3%', flex: 2 }}>
+                        <Text style={styles.text}>{item.name}</Text>
+                        <Text style={styles.text}>{ item.phone}</Text>
+                    </View>
+          
                 </View>
-            )
-       
+            </View>
+
+        )
+    }
+    press = () => {
+        this.setState((state) => ({
+        checked: !state.checked,
+        }));
+    }
+    render() {
+        return (
+        <View style={styles.container}>
+        {this.state.hasData == true ? (
+                            
+                            <FlatList
+                        style={{}}
+                        ItemSeparatorComponent={this.renderSeparator}
+                        data={this.state.contactsData}
+                        renderItem={this.renderRow}
+                        keyExtractor={this.keyExtractor}
+                        
+                    /> )
+                     : <View></View>
+                            }
+        
+            <ListItem
+                title={
+                <CheckBox
+                    title="Click Here!"
+                    onPress={this.press}
+                    checked={this.state.checked}
+                />
+                }
+            />
+                    <ListItem
+                title={
+                <CheckBox
+                    title="Click Here!"
+                    onPress={this.press}
+                    checked={this.state.checked}
+                />
+                }
+            />
+        </View>
+        );
     }
 }
 

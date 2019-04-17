@@ -24,7 +24,8 @@ export default class App extends Component {
             invitesData: [],
             inviteKey:null,
             hasInviteData: false,
-            checked:false,
+            checked:[],
+            countSelected:0,
         }
     }
        
@@ -58,62 +59,69 @@ export default class App extends Component {
             />
         );
     };
-    renderRow({ item }) {
-        return (
-            
-            <View style={styles.card}>
-                <View style={{flex:1,flexDirection:'row'}}>
-                    <Image style={styles.image} source={{ uri: item.photo }} />
-                    <View style={{ marginTop: '3%', flex: 2 }}>
-                        <Text style={styles.text}>{item.name}</Text>
-                        <Text style={styles.text}>{ item.phone}</Text>
-                    </View>
-          
-                </View>
-            </View>
+    handleChange = (index) => {
+        let checked = [...this.state.checked];
+        let countchecked = this.state.countSelected
+        checked[index] = !checked[index];
+        this.setState({ checked });
+        if (checked[index]==true){
+            this.setState({countSelected: countchecked +1});
+        }
+        else{
+            this.setState({countSelected: countchecked -1});
+        }
+    }
 
-        )
-    }
-    press = () => {
-        this.setState((state) => ({
-        checked: !state.checked,
-        }));
-    }
     render() {
+        let {contactsData, checked, countSelected} = this.state;
         return (
-        <View style={styles.container}>
-        {this.state.hasData == true ? (
-                            
-                            <FlatList
-                        style={{}}
-                        ItemSeparatorComponent={this.renderSeparator}
-                        data={this.state.contactsData}
-                        renderItem={this.renderRow}
-                        keyExtractor={this.keyExtractor}
-                        
-                    /> )
-                     : <View></View>
-                            }
-        
-            <ListItem
-                title={
-                <CheckBox
-                    title="Click Here!"
-                    onPress={this.press}
-                    checked={this.state.checked}
-                />
-                }
-            />
-                    <ListItem
-                title={
-                <CheckBox
-                    title="Click Here!"
-                    onPress={this.press}
-                    checked={this.state.checked}
-                />
-                }
-            />
-        </View>
+            <View style={{flex:1}}>
+                <View style={{flex:.5}}>
+                
+                    <View style={{flex: 1, flexDirection: 'row', paddingVertical:'10%', marginTop:'20%'}}>
+
+                        <View style={{flex: 1}}>
+
+                            <Text style={{color: '#808080'}}> Who would you like to invite?</Text>
+                        </View>
+                        <View style={{flex: 1}}>
+
+                            <Text style={{color:'#2FB3FD', textAlign:'right', marginRight:'5%'}}>{this.state.countSelected} Selected</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={{ height: 1, width: "90%", backgroundColor: "#CED0CE", marginLeft: "5%" }} />
+
+                    {this.state.hasData == true ? (
+                                    
+                                <FlatList
+                                    style={{}}
+                                    ItemSeparatorComponent={this.renderSeparator}
+                                    data={this.state.contactsData}
+                                    extraData={this.state}
+                                    renderItem={({ item, index}) =>
+                                        <View style={styles.card}>
+                                            <View style={{flex:1,flexDirection:'row'}}>
+                                                <Image style={styles.image} source={{ uri: item.photo }} />
+                                                <View style={{ marginTop: '3%', flex: 2 }}>
+                                                    <Text style={styles.text}>{item.name}</Text>
+                                                    <Text style={styles.text}>{ item.phone}</Text>
+                                                </View>
+                                                <View style={{ flex: .75, flexDirection: 'row'}}>
+                                                <CheckBox
+                                                    onPress={() => this.handleChange(index)}
+                                                    checked={checked[index]} 
+                                                />
+                                                </View>
+                                            </View>
+                                        </View>
+                                    }
+                                    keyExtractor={this.keyExtractor}
+                                    
+                                /> )
+                                : <View></View>
+                    }
+            </View>
         );
     }
 }

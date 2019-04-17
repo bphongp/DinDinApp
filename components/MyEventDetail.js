@@ -66,7 +66,7 @@ export default class App extends Component {
             
         })
         firebase.database().ref('events/0001').on("value", snapshot => {
-            this.setState({ eventsData: snapshot.val().name, 
+            this.setState({ eventName: snapshot.val().name, 
                 eventTime: snapshot.val().date.time,
                 eventLocation: snapshot.val().location,
                 eventMonth:snapshot.val().date.month,
@@ -145,21 +145,13 @@ export default class App extends Component {
                     <View style ={styles.myEvent}>
                         <Text style={{fontSize: 18}}>{this.state.eventLocation}</Text>
                         <Text style={{textAlign:'center', color:'#808080'}}>{this.state.eventDay} {this.state.eventMonth}-{this.state.eventTime}</Text>
+                        <Text style={{textAlign:'center', color:'#808080'}}>Host by You</Text>
                     </View>
                 </View>
                     <View style={{flex:.25}}>
-                    
-                        <View style={{flex: .2, flexDirection: 'row'}}>
 
-                            <View style={{flex: 1}}>
+                        <Text style={{color: '#808080'}}> Who's coming</Text>
 
-                                <Text style={{color: '#808080'}}> Who would you like to invite?</Text>
-                            </View>
-                            <View style={{flex: 1}}>
-
-                                <Text style={{color:'#2FB3FD', textAlign:'right', marginRight:'5%'}}>{this.state.countSelected} Selected</Text>
-                            </View>
-                        </View>
                     </View>
                 <View style={{ height: 1, width: "90%", backgroundColor: "#CED0CE", marginLeft: "5%" }} />
 
@@ -179,10 +171,6 @@ export default class App extends Component {
                                                     <Text style={styles.text}>{ item.phone}</Text>
                                                 </View>
                                                 <View style={{ flex: .75, flexDirection: 'row'}}>
-                                                <CheckBox
-                                                    onPress={() => this.handleChange(index)}
-                                                    checked={checked[index]} 
-                                                />
                                                 </View>
                                             </View>
                                         </View>
@@ -194,8 +182,8 @@ export default class App extends Component {
                     }
                         <View style = {{flex:0.3}}>
 
-                            <TouchableOpacity style = {{flex: 1}} onPress={() => {this.props.navigation.navigate('MyEventDetail')}}>
-                                <Image style= {{width: '100%', height: '100%'}} source={require('../assets/Sendbtn.png')} />
+                            <TouchableOpacity style = {{flex: 1}}>
+                                <Image style= {{width: '100%', height: '100%'}} source={require('../assets/Cancelbtn.png')} />
                             </TouchableOpacity>
                         </View>
             </View>

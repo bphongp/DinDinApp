@@ -80,8 +80,8 @@ export default class AddNewEvent extends Component {
     this.setState({ mapRegion });
   };
   render() {
-    console.log(this.state.min)
-    console.log(this.state.hr)
+    //console.log(this.state.min)
+    //console.log(this.state.hr)
     return (
       <View style={styles.container}>
           <View style ={{flex:1, alignItems:'center'}}>
@@ -216,7 +216,7 @@ export default class AddNewEvent extends Component {
 
   _save_min(min){
     this.setState({ min: min})
-    console.log(this.state.min)
+    //console.log(this.state.min)
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -232,7 +232,7 @@ export default class AddNewEvent extends Component {
   };
   _save_hr(hr){
     this.setState({ hr: hr})
-    console.log(this.state.hr)
+    //console.log(this.state.hr)
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -248,7 +248,7 @@ export default class AddNewEvent extends Component {
   };
   _save_ampm(ampm){
     this.setState({ ampm: ampm})
-    console.log(this.state.ampm)
+    //console.log(this.state.ampm)
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -276,7 +276,7 @@ export default class AddNewEvent extends Component {
 
   _attemptGeocodeAsync = async () => {
     this.setState({ inProgress: true, error: null });
-    console.log(this.state.selectedExample)
+    //console.log(this.state.selectedExample)
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }

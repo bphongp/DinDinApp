@@ -18,17 +18,39 @@ export default class App extends Component {
         super(props)
         this.state = {
             eventsDataAll: [],
-            eventsData: [],
+            eventsData: '',
             contactsData: [],
             hasData: false,
-            invitesData: [],
-            inviteKey:null,
-            hasInviteData: false,
             checked:[],
             countSelected:0,
+            eventName:'',
+            eventTime:'',
+            eventLocation:'',
+            eventMonth:'',
+            eventDay:''
         }
     }
-       
+    static navigationOptions = {
+        title:"DinDin",
+        headerTitleStyle:{
+            fontSize: 20,
+            fontWeight: undefined,
+            alignSelf: 'center',
+            flexGrow:1,
+            textAlign:'center',
+        },
+        headerStyle: {
+            paddingVertical:15,
+        },
+        headerRight:(
+            <View style={{
+                margin: 5,
+                paddingHorizontal: 10,
+            }}>
+                <Image source={require('../assets/search.png')} />
+            </View>
+        )
+      };
     componentWillMount() {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -39,12 +61,20 @@ export default class App extends Component {
     readUserData() {
         //console.log("readUserData Fired")
         let currentContext = this
-         this.database = firebase.database();
-         firebase.database().ref('Contacts/').on("value", snapshot => {
-             this.setState({ contactsData: Object.values(snapshot.val()), hasData: true, eventsDataAll: Object.values(snapshot.val())})
+        this.database = firebase.database();
+        firebase.database().ref('Contacts/').on("value", snapshot => {
+            this.setState({ contactsData: Object.values(snapshot.val()), hasData: true, eventsDataAll: Object.values(snapshot.val())})
             
-         })
-
+        })
+        firebase.database().ref('events/0001').on("value", snapshot => {
+            this.setState({ eventsData: snapshot.val().name, 
+                eventTime: snapshot.val().date.time,
+                eventLocation: snapshot.val().location,
+                eventMonth:snapshot.val().date.month,
+                eventDay: snapshot.val().date.day,
+                hasData: true, eventsDataAll: Object.values(snapshot.val())})
+            console.log("readdata: "+this.state.eventsData)
+        })
          
      }
      renderSeparator = () => {
@@ -74,22 +104,64 @@ export default class App extends Component {
 
     render() {
         let {contactsData, checked, countSelected} = this.state;
+        if (this.state.eventMonth==1){
+            this.setState({eventMonth:'Janurary'})
+        }
+        if (this.state.eventMonth==2){
+            this.setState({eventMonth:'Feburary'})
+        }
+        if (this.state.eventMonth==3){
+            this.setState({eventMonth:'March'})
+        }
+        if (this.state.eventMonth==4){
+            this.setState({eventMonth:'April'})
+        }
+        if (this.state.eventMonth==5){
+            this.setState({eventMonth:'May'})
+        }
+        if (this.state.eventMonth==6){
+            this.setState({eventMonth:'June'})
+        }
+        if (this.state.eventMonth==7){
+            this.setState({eventMonth:'July'})
+        }
+        if (this.state.eventMonth==8){
+            this.setState({eventMonth:'August'})
+        }
+        if (this.state.eventMonth==9){
+            this.setState({eventMonth:'September'})
+        }
+        if (this.state.eventMonth==10){
+            this.setState({eventMonth:'October'})
+        }
+        if (this.state.eventMonth==11){
+            this.setState({eventMonth:'November'})
+        }
+        if (this.state.eventMonth==12){
+            this.setState({eventMonth:'December'})
+        }
         return (
             <View style={{flex:1}}>
-                <View style={{flex:.5}}>
-                
-                    <View style={{flex: 1, flexDirection: 'row', paddingVertical:'10%', marginTop:'20%'}}>
-
-                        <View style={{flex: 1}}>
-
-                            <Text style={{color: '#808080'}}> Who would you like to invite?</Text>
-                        </View>
-                        <View style={{flex: 1}}>
-
-                            <Text style={{color:'#2FB3FD', textAlign:'right', marginRight:'5%'}}>{this.state.countSelected} Selected</Text>
-                        </View>
+                <View style= {{flex:1, alignItems:'center'}}>
+                    <View style ={styles.myEvent}>
+                        <Text style={{fontSize: 18}}>{this.state.eventLocation}</Text>
+                        <Text style={{textAlign:'center', color:'#808080'}}>{this.state.eventDay} {this.state.eventMonth}-{this.state.eventTime}</Text>
                     </View>
                 </View>
+                    <View style={{flex:.25}}>
+                    
+                        <View style={{flex: .2, flexDirection: 'row'}}>
+
+                            <View style={{flex: 1}}>
+
+                                <Text style={{color: '#808080'}}> Who would you like to invite?</Text>
+                            </View>
+                            <View style={{flex: 1}}>
+
+                                <Text style={{color:'#2FB3FD', textAlign:'right', marginRight:'5%'}}>{this.state.countSelected} Selected</Text>
+                            </View>
+                        </View>
+                    </View>
                 <View style={{ height: 1, width: "90%", backgroundColor: "#CED0CE", marginLeft: "5%" }} />
 
                     {this.state.hasData == true ? (
@@ -121,6 +193,12 @@ export default class App extends Component {
                                 /> )
                                 : <View></View>
                     }
+                        <View style = {{flex:0.3}}>
+
+                            <TouchableOpacity style = {{flex: 1}}>
+                                <Image style= {{width: '100%', height: '100%'}} source={require('../assets/Sendbtn.png')} />
+                            </TouchableOpacity>
+                        </View>
             </View>
         );
     }
@@ -128,6 +206,18 @@ export default class App extends Component {
 
 const styles = StyleSheet.create(
     {
+        myEvent: {
+            overflow: 'hidden',
+            backgroundColor: 'white',
+            flex:.75,
+            width:'90%',
+            alignItems:'center',
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: 'lightgrey',
+            borderRadius: 8,
+            marginTop:'3%'
+        },
         card: {
             overflow: 'hidden',
             backgroundColor: 'white',

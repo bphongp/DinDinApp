@@ -29,7 +29,7 @@ export default class InvitationCard extends React.Component {
             inProgress: false,
 
         }
-        console.log("Invite key in invitationdetails " + this.state.inviteKey)
+        //console.log("Invite key in invitationdetails " + this.state.inviteKey)
     }
     componentWillMount() {
         if (!firebase.apps.length) {

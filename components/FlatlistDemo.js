@@ -153,7 +153,7 @@ export default class FlatlistDemo extends React.Component {
     months = ["Janurary", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     render() {
         {this.state.eventsData.sort(this.compare)}
-        {console.log(this.state.eventsData)}
+        //{console.log(this.state.eventsData)}
             return (
                 <View style = {{ flex: 1,}}>
                 <View style = {styles.container}>

@@ -41,7 +41,7 @@ export default class InvitationCard extends React.Component {
     }
     render() {
         //console.log("invite card render entered")
-        console.log("invite key at card " + this.props.inviteKey)
+        //console.log("invite key at card " + this.props.inviteKey)
         return (
             <View style = {styles.card}>
                 <View style = {styles.topContainer}>

@@ -1,0 +1,54 @@
+{
+  "Contacts" : {
+    "aaaaaaa" : {
+      "name" : "Baekhyun",
+      "phone" : "111-222-3333",
+      "photo" : "https://befunkycartoonizer.s3.amazonaws.com/C2018345-1376000575598397large.jpg"
+    },
+    "bbbbbbb" : {
+      "name" : "Seolhyun",
+      "phone" : "555-6666-8888",
+      "photo" : "https://www.koreaboo.com/wp-content/uploads/2017/08/Seolhyun01.jpg"
+    }
+  },
+  "events" : {
+    "0001" : {
+      "date" : {
+        "month" : 4
+      },
+      "name" : "Dinner hosted by You",
+      "photo" : "https://webaim.org/blog/media/pig.jpg"
+    },
+    "-LbWdPYjiD2HS4xa89he" : {
+      "date" : {
+        "day" : 20,
+        "month" : 2,
+        "time" : "2:00 pm"
+      },
+      "location" : "University of Virginia",
+      "name" : "D.O",
+      "photo" : "https://kprofiles.com/wp-content/uploads/2017/01/D.O1.jpg"
+    },
+    "-LcSluYoJHkopmdhLabQ" : {
+      "date" : {
+        "day" : 23,
+        "month" : 11,
+        "time" : "10:00 am"
+      },
+      "name" : "Umji",
+      "photo" : "https://kprofiles.com/wp-content/uploads/2018/07/g-friend-umji-e1515850838199.jpg"
+    }
+  },
+  "invites" : {
+    "asdlasdl" : {
+      "date" : {
+        "day" : 4,
+        "month" : 6,
+        "time" : "9:00 pm"
+      },
+      "location" : "2210 Fontaine Ave",
+      "name" : "Chen",
+      "photo" : "https://img.kpopmap.com/2019/01/Chen-EXO.jpg"
+    }
+  }
+}
